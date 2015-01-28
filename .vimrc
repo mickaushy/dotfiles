@@ -23,6 +23,7 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'tpope/vim-fugitive'
@@ -116,8 +117,8 @@ set noerrorbells "エラーメッセージの表示時にビープを鳴らさ�
 "  ----- color -----
 syntax on
 set t_Co=256
-set background=dark
-colorscheme jellybeans
+" set background=dark
+colorscheme lucius
 
 "  ----- keymap -----
 " todo -  F6で相対行番号とか

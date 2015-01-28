@@ -1,0 +1,58 @@
+! comment
+
+! caps -> ctrl
+! remove lock = Caps_Lock
+! remove control =Control_L
+
+! win -> Mode_switch
+remove mod4 = Super_L
+remove mod5 = Mode_switch
+
+! caps -> ctrl, win -> Mode_switch
+keycode 66 = Control_L Caps_Lock Control_L Caps_Lock
+keycode 133 = Mode_switch
+
+! henkan -> Mode
+keycode 100 = Mode_switch
+
+! 203 (no exists) -> ctrl
+keycode 203 = Control_L
+
+! menu -> ctrl
+keycode 135 = Control_R
+
+! mode + bs -> del
+keycode 22 = BackSpace BackSpace Delete Delete
+
+! mode + hjkl -> arrows
+keycode 43 = h H Left H
+keycode 44 = j J Down J
+keycode 45 = k K Up K
+keycode 46 = l L Right L
+
+! special letters
+keycode  20 = minus equal plusminus NoSymbol
+keycode 25 = w W Greek_omega Greek_OMEGA
+keycode 28 = t T Greek_theta Greek_THETA
+keycode 30 = u U udiaeresis Udiaeresis
+!keycode 31 = i I 
+keycode 32 = o O odiaeresis Odiaeresis
+keycode 33 = p P Greek_pi Greek_PI
+keycode 38 = a A Greek_alpha Greek_ALPHA
+keycode 39 = s S scedilla Scedilla
+keycode 40 = d D Greek_delta Greek_DELTA
+keycode 47 = semicolon plus Greek_sigma Greek_SIGMA
+keycode 54 = c C ccedilla Ccedilla
+keycode 56 = b B Greek_beta Greek_BETA
+keycode 58 = m M Greek_mu Greek_MU
+
+! @, [, ] -> [, ], @
+keycode 34 = bracketleft braceleft bracketleft braceleft
+keycode 35 = bracketright braceright bracketright braceright
+keycode 51 = at grave at grave
+
+! add each
+! add control = Control_L
+add control = Control_R
+! add Lock = Caps_Lock
+add mod5 = Mode_switch

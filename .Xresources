@@ -1,0 +1,100 @@
+!---infinality---
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: 0
+Xft.hintstyle: hintmedium
+Xft.lcdfilter: lcddefault
+
+!---urxvt---
+URxvt.font: xft:Ricty:size=12
+URxvt.iconFile:    /usr/share/icons//usr/share/icons/Flattr/apps/scalable/bash.svg
+URxvt.scrollBar: plain
+urxvt.preeditType: OverTheSpot 
+
+! molokai inspired colors (darker version)
+! ========================================
+! vim: set ft=xdefaults:
+
+!URxvt*background:   #000000
+!URxvt*foreground:   #d0d0d0
+
+!URxvt*cursorColor:  #d0d0d0
+
+!URxvt*colorBD:      #3579a8
+!URxvt*colorUL:      #4eb4fa
+
+!black
+!URxvt*color0:       #000000
+!URxvt*color8:       #1c1c1c
+
+!red
+!URxvt*color1:       #960050
+!URxvt*color9:       #ff0090
+
+!green
+!URxvt*color2:       #66aa11
+!URxvt*color10:      #80ff00
+
+!yellow
+!URxvt*color3:       #c47f2c
+!URxvt*color11:      #ffba68
+
+!blue
+!URxvt*color4:       #30309b
+!URxvt*color12:      #5f5fee
+
+!magenta
+!URxvt*color5:       #7e40a5
+!URxvt*color13:      #bb88dd
+
+!cyan
+!URxvt*color6:       #3579a8
+!URxvt*color14:      #4eb4fa
+
+!white
+!URxvt*color7:       #5f5f5f
+!URxvt*color15:      #d0d0d0
+
+! adwaita white theme
+! ===================
+URxvt*background:   #ededed
+URxvt*foreground:   #000000
+
+URxvt*cursorColor:  #00bbff
+
+URxvt*colorBD:      #0084C8
+URxvt*colorUL:      #00bbff
+
+!black
+URxvt*color0:       #000000
+URxvt*color8:       #141414
+
+!red
+URxvt*color1:       #f74d97
+URxvt*color9:       #fd8dbd
+
+!green
+URxvt*color2:       #4cb64a
+URxvt*color10:      #9cBB43
+
+!yellow
+URxvt*color3:       #f8d00e
+URxvt*color11:      #feffbf
+
+!blue
+URxvt*color4:       #1c3c79
+URxvt*color12:      #4f78b5
+
+!magenta
+URxvt*color5:       #f5666d
+URxvt*color13:      #ff7092
+
+!cyan
+URxvt*color6:       #0084c8
+URxvt*color14:      #00bbff
+
+!white
+URxvt*color7:       #b1b4b4
+URxvt*color15:      #dedfdf

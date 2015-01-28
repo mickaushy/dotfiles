@@ -1,0 +1,8 @@
+-- -*- mode:haskell -*-
+Config {
+  font = "xft:Ricty-10",
+  bgColor = "#ededed",
+  fgColor = "#000000",
+  position = Bottom,
+  lowerOnStart = False
+}

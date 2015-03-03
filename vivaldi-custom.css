@@ -1,0 +1,7 @@
+#tabs-container.right #tabs .tab,#tabs-container.left #tabs .tab {
+  height:26px;max-height:26px
+  }
+
+.button-addressfield.home,.button-tabbar.home,.button-toolbar-small.home,.button-toolbar.home{
+  display:none !important
+}

@@ -12,6 +12,7 @@ URxvt.font: xft:Ricty:size=12
 URxvt.iconFile:    /usr/share/icons//usr/share/icons/Flattr/apps/scalable/bash.svg
 URxvt.scrollBar: plain
 urxvt.preeditType: OverTheSpot 
+URxvt.iso1755: False
 
 !---terminal---
 !source: https://github.com/jonathanfilip/lucius/

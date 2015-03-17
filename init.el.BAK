@@ -1,0 +1,115 @@
+;;
+;; init.el
+;;
+
+;; Language
+(set-language-environment 'Japanese)
+
+;; code
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;;Package Management
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+(require 'undo-tree)
+(require 'rainbow-delimiters)
+
+;;(require 'evil)
+;;(evil-mode 1)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (adwaita))))
+
+(set-face-attribute 'default nil :family "Ricty" :height 120)
+
+;;(require 'powerline-evil)
+;;(powerline-evil-vim-color-theme)
+
+(require 'emms-setup)
+(require 'emms-i18n)
+(emms-standard)
+;todo: install emacs-window-manager, autocomp
+
+(require 'eww)
+
+(require 'org)
+(setq org-display-custom-times "<%Y-%m-%d %H:%M:%S>")
+(setq org-time-stamp-custom-formats "<%Y-%m-%d %H:%M:%S>")
+(add-hook 'org-mode-hook
+          (lambda ()
+            (set (make-local-variable 'system-time-locale) "C")))
+
+(setq org-directory "~/Dropbox/org/")
+(set org-hide-leading-stars t)
+(setq org-agenda-files (list "~/Dropbox/org/"))
+(setq org-default-notes-file (concat org-directory "gtd.org"))
+
+;; capture
+(global-set-key "\C-cc" 'org-capture)
+(setq org-capture-templates
+      ;; key/name, entry (type location name)
+      ;; "string"
+      '(("t" "Todo" entry (file+headline "~/Dropbox/org/gtd.org" "todo")
+	 "** TODO %?\n %i\n %a")
+	("w" "Waiting" entry (file+headline "~/Dropbox/org/gtd.org" "todo")
+	 "** WAITING %?\n %i\n %a")
+	("f" "Fixed plan" entry (file+headline "~/Dropbox/org/gtd.org" "todo")
+	 "** FIXED ")
+	("m" "Maybe" entry (file+headline "~/Dropbox/org/gtd.org" "maybe")
+	 "** ")
+       )
+)
+
+;; interactive window resize
+;; 
+(defun my-window-resizer ()
+  "Control window size and position."
+  (interactive)
+  (let ((window-obj (selected-window))
+        (current-width (window-width))
+        (current-height (window-height))
+        (dx (if (= (nth 0 (window-edges)) 0) 1
+              -1))
+        (dy (if (= (nth 1 (window-edges)) 0) 1
+              -1))
+        action c)
+    (catch 'end-flag
+      (while t
+        (setq action
+              (read-key-sequence-vector (format "size[%dx%d]"
+                                                (window-width)
+                                                (window-height))))
+        (setq c (aref action 0))
+        (cond ((= c ?l)
+               (enlarge-window-horizontally dx))
+              ((= c ?h)
+               (shrink-window-horizontally dx))
+              ((= c ?j)
+               (enlarge-window dy))
+              ((= c ?k)
+               (shrink-window dy))
+              ;; otherwise
+              (t
+               (let ((last-command-char (aref action 0))
+                     (command (key-binding action)))
+                 (when command
+                   (call-interactively command)))
+               (message "Quit")
+               (throw 'end-flag t)))))))
+;; C-q as window prefix
+(define-key global-map "\C-q" (make-sparse-keymap))
+(global-set-key "\C-q\C-q" 'quoted-insert)
+(global-set-key "\C-q\C-r" '(my-window-resizer))
+;; end ... key remaps dont work somehow
+

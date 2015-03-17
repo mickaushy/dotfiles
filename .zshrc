@@ -32,3 +32,7 @@ export QT_IM_MODULE=fcitx
 # man -> en
 alias man='LANG=C /usr/bin/man'
 alias jman='LANG=ja_JP.UTF-8 /usr/bin/man'
+
+# emacs
+export PATH="/home/mickaushy/.emacs.d/.cask/bin:$PATH"
+

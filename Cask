@@ -28,4 +28,4 @@
 (depends-on "web-mode")
 (depends-on "yasnippet")
 
-(depends-on "pallet")
+(depends-on "helm")

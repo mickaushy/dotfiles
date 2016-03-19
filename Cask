@@ -29,3 +29,5 @@
 (depends-on "yasnippet")
 
 (depends-on "helm")
+(depends-on "mozc")
+(depends-on "migemo")

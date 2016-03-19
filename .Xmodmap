@@ -1,0 +1,17 @@
+! comment
+! for xmonad: Caps -> super(mod4)
+remove lock = Caps_Lock
+remove mod4 = Super_L
+
+keycode 66 = Super_L
+
+! @, [, ] -> [, ], @ in JIS keyboard
+keycode 34 = bracketleft braceleft bracketleft braceleft
+keycode 35 = bracketright braceright bracketright braceright
+keycode 51 = at grave at grave
+
+! add control = Control_L
+add mod4 = Super_L Super_R
+! add control = Control_R
+! add Lock = Caps_Lock
+! add mod5 = Mode_switch

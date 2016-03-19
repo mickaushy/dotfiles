@@ -1,4 +1,4 @@
-;;
+;; 
 ;; init.el
 ;; author: mickaushy
 ;; -*- coding: utf-8 -*-
@@ -102,3 +102,44 @@
 (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
 
 ;(define-key global-map [zenkaku-hankaku] 'toggle-input-method)
+
+;; mozc
+;(require 'mozc)
+;(setq default-input-method "japanese-mozc")
+;(setq mozc-candidate-style 'overlay)
+;(global-set-key (kbd "C-j") 'toggle-input-method)
+; (set-face-attribute 'mozc-cand-overlay-even-face 'nil
+;                      :background "aquamarine" :foreground "black")
+;  (set-face-attribute 'mozc-cand-overlay-odd-face 'nil
+;                      :background "aquamarine" :foreground "black"))
+
+;; DDSKK
+(require 'skk-autoloads)
+(global-set-key (kbd "C-x C-j") 'skk-mode)
+(setq skk-tut-file "/home/mickaushy/ddskk-15.2/etc/SKK.tut")
+(setq skk-sticky-key [muhenkan])
+(setq skk-japanese-message-and-error t)
+(setq skk-large-jisyo "~/ddskk-15.2/dic/SKK-JISYO.L")
+(setq skk-isearch-start-mode 'latin)
+; azik
+(setq skk-use-azik t)
+(setq skk-azik-keyboard 'jp106)
+
+;; migemo
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+(setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
+
+
+;; undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode)
+
+;; wgrep
+(require 'wgrep)

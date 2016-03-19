@@ -5,6 +5,6 @@ ln -sf ~/dotfiles/xmonad.hs ~/.xmonad/xmonad.hs
 ln -sf ~/dotfiles/.cvimrc ~/.cvimrc
 ln -sf ~/dotfiles/.gvimrc ~/.gvimrc
 ln -sf ~/dotfiles/.xmobarrc ~/.xmobarrc
-ln -sf ~/dotfiles/.xmodmaprc ~/.xmodmaprc
+ln -sf ~/dotfiles/.Xmodmap ~/.Xmodmap
 ln -sf ~/dotfiles/.Xresources ~/.Xresources
 ln -sf ~/dotfiles/.zshrc ~/.zshrc

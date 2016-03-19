@@ -1,8 +1,27 @@
 -- -*- mode:haskell -*-
 Config {
-  font = "xft:Ricty-10",
-  bgColor = "#ededed",
-  fgColor = "#000000",
-  position = Bottom,
-  lowerOnStart = False
+  font = "xft:Ricty-11",
+  bgColor = "#f7efdf",
+  fgColor = "#774f38",
+  position = BottomW L 90,
+  commands = [ Run Date "%Y-%b-%_d(%a) %H:%M:%S" "theDate" 10,
+               Run StdinReader]
+  lowerOnStart = False,
+  sepChar = "%"
+  , alignSep = "}{"
+--  , template = "%StdinReader% }{<fc=#774f38>%theDate%"</fc>
+--  , template = " %StdinReader% }{<fc=#333333>cpu</fc>  %multicpu%   <fc=#333333>vol</fc>  %volume%   <fc=#333333>bat</fc>  %battery%  <fc=#333333>|</fc>  %date%  "
 }
+
+
+    Config { font     = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+           , bgColor  = "#000000"
+           , fgColor  = "#BFBFBF"
+           , position = Top
+           , lowerOnStart = True
+           , commands = [ Run $ Date "%a %b %_d %Y * %H:%M:%S" "theDate" 10
+                        , Run StdinReader]
+           , sepChar  = "%"
+           , alignSep = "}{"
+           , template = "%StdinReader% }{ <fc=#00FF00>%uname%</fc> * <fc=#FF0000>%theDate%</fc>"
+           }

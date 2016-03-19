@@ -4,11 +4,11 @@ Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
 Xft.autohint: 0
-Xft.hintstyle: hintmedium
+Xft.hintstyle: hintfull
 Xft.lcdfilter: lcddefault
 
 !---urxvt---
-URxvt.font: xft:Ricty:size=12
+URxvt.font: xft:Ricty:size=12:hinting:true
 URxvt.iconFile:    /usr/share/icons//usr/share/icons/Flattr/apps/scalable/bash.svg
 URxvt.scrollBar: plain
 urxvt.preeditType: OverTheSpot 
@@ -16,30 +16,69 @@ URxvt.iso1755: False
 
 !---terminal---
 !source: https://github.com/jonathanfilip/lucius/
-*background:  #eeeeee
-*foreground:  #444444
-*cursorColor: #5f87af
+!*background:  #eeeeee
+!*foreground:  #444444
+!*cursorColor: #5f87af
 
-*color0:      #444444
-*color8:      #444444
+!*color0:      #444444
+!*color8:      #444444
 
-*color1:      #af0000
-*color9:      #af0000
+!*color1:      #af0000
+!*color9:      #af0000
 
-*color2:      #008700
-*color10:     #008700
+!*color2:      #008700
+!*color10:     #008700
 
-*color3:      #af5f00
-*color11:     #af5f00
+!*color3:      #af5f00
+!*color11:     #af5f00
 
-*color4:      #005faf
-*color12:     #005faf
+!*color4:      #005faf
+!*color12:     #005faf
 
-*color5:      #870087
-*color13:     #870087
+!*color5:      #870087
+!*color13:     #870087
 
-*color6:      #008787
-*color14:     #008787
+!*color6:      #008787
+!*color14:     #008787
 
-*color7:      #eeeeee
-*color15:     #eeeeee
+!*color7:      #eeeeee
+!*color15:     #eeeeee
+
+
+
+*.foreground:   #774f38
+*.background:   #f7efdf
+*.cursorColor:  #774f38
+
+! black
+*.color0:       #774f38
+*.color8:       #878787
+
+! red
+*.color1:       #b95942
+*.color9:       #f10000
+
+! green
+*.color2:       #308444
+*.color10:      #82a3b3
+
+! yellow
+*.color3:       #996e1f
+*.color11:      #c79747
+
+! blue
+*.color4:       #50707e
+*.color12:      #678797
+
+! magenta
+*.color5:       #aa56b2
+*.color13:      #afafaf
+
+! cyan
+*.color6:       #308090
+*.color14:      #e4dccc
+
+! white
+*.color7:       #ede4d4
+!*.color15:      #eeeeee
+

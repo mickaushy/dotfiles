@@ -1,0 +1,82 @@
+" タイトル文字列
+set titlestring=Firefox
+
+" スクロールの端などの際に出るbeepをoff
+beep off
+" エラー時にベルを鳴らさない
+set noerrorbells
+
+" アドオンインストール時の待ち時間カット
+set! security.dialog_enable_delay=0
+
+" プライベートブラウジング
+noremap <C-p> :winopen -private<CR>
+
+" Ctrl+r で再起動
+map <C-r> :restart<CR>
+" R で.vimperatorrcを再読込み
+map R :source ~/_vimperatorrc<CR>
+
+"=======================================================
+
+" h,lに前のタブ,次のタブを割り当てる
+map h <C-PageUp>
+map l <C-PageDown>
+
+" H/Lに左右を割り当てる
+map H <Left>
+map L <Right>
+
+" Ctrl+h/Ctrl+lに戻る/進むを割り当てる
+map <C-h> <A-Left>
+map <C-l> <A-Right>
+
+" j,kによる上下スクロールの移動量を5倍に設定
+noremap j 5<C-e>
+noremap k 5<C-y>
+
+" Ctrl+aで全選択になるようにする
+noremap <C-a> i<C-a>
+inoremap <C-a> <insert><C-a><insert>
+
+" Uで最近閉じたタブを表示する
+map U :u<Space>
+
+" 検索時、大文字が含まれている場合にのみ case sensitiveにする
+set ignorecase
+set smartcase
+
+" デフォルトの検索エンジン
+set defsearch=google
+
+" sでぐぐる
+nnoremap s :tabopen<Space>google<Space>
+
+" 選択文字列でぐぐる(マウスとVISUALモードの選択時に対応)
+nmap S <C-c>:tabopen<Space>google<Space><C-v><CR>
+vmap S <C-c><Esc><Esc>:tabopen<Space>google<Space><C-v><CR>
+
+" pは文字列によってURLと判断されて誤爆するので明示的にGoogle検索を指定する
+nnoremap p :tabopen<Space>google<Space><C-v><CR>
+
+" 自動補完の候補
+set complete=sl
+
+" コマンドモードではIMEをOFFに
+style! -name=commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+" 入力欄に自動フォーカスしない
+set focuscontent
+
+" ヒントに使用する文字。ここの設定は0からスタートだが表示は1から
+set hintchars=;asdfghjkl
+
+" ヒント表示色
+highlight Hint font-family: Arial; font-size: 16px; font-weight: bold; text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; color: #33cccc;
+highlight HintElem color: gray; background-color: #a1e4e6;
+highlight HintActive color: black; background-color: #ff8700;
+
+" エラー色
+hi ErrorMsg color:white; background-color: #ec6aa1;
+
+" キャレット幅を変更
+set! ui.caretWidth=2

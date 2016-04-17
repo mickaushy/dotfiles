@@ -25,8 +25,10 @@ values."
      ;; ----------------------------------------------------------------
      ;; auto-completion
      ;; better-defaults
+     c-c++
      emacs-lisp
      ;; git
+     latex
      ;; markdown
      org
      (osx :variables osx-use-option-as-meta nil)
@@ -263,6 +265,14 @@ you should place you code here."
           '((daily today require-timed)
             "----------------"
             (200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000)))
+    ;; from here org-babel
+    (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((C . t)
+      (python . t)
+      (R . t)
+      (sh . t)
+      ))
     )
   )
 

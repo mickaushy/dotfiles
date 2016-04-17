@@ -32,9 +32,12 @@ values."
      ;; markdown
      org
      (osx :variables osx-use-option-as-meta nil)
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-default-shell 'eshell
+            shell-default-term-shell "/bin/bash"
+            shell-enable-smart-eshell t
+            shell-default-height 30
+            shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
@@ -109,7 +112,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Ricty Discord"
+   dotspacemacs-default-font '("Ricty"
                                :size 16
                                :weight normal
                                :width normal

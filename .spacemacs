@@ -27,9 +27,10 @@ values."
      ;; better-defaults
      c-c++
      emacs-lisp
-     ;; git
+     games
+     git
      latex
-     ;; markdown
+     markdown
      org
      (osx :variables osx-use-option-as-meta nil)
      (shell :variables
@@ -39,7 +40,8 @@ values."
             shell-default-height 30
             shell-default-position 'bottom)
      ;; spell-checking
-     ;; syntax-checking
+     syntax-checking
+     themes-megapack
      ;; version-control
      )
    ;; List of additional packages that will be installed without being
@@ -101,8 +103,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-light
-                         spacemacs-dark
+   dotspacemacs-themes '(flatui
+                         dichromacy
+                         spacemacs-light
                          solarized-light
                          solarized-dark
                          leuven
@@ -256,18 +259,21 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
 
+  ;; from here config evil-escape
+  (setq-default evil-escape-delay 0.3)
+
   ;; from here config org
   (with-eval-after-load 'org
     ;; main setting
     (setq org-agenda-files '("/Users/mickaushy/Dropbox/org"))
     (setq org-directory "/Users/mickaushy/Dropbox/org")
     (setq org-default-notes-file (concat org-directory "gtd.org"))
-
     ;; org-agenda
     (setq org-agenda-time-grid
           '((daily today require-timed)
             "----------------"
             (200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000)))
+
     ;; from here org-babel
     (org-babel-do-load-languages
     'org-babel-load-languages

@@ -109,11 +109,12 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(flatui
+                         apropospriate-light
                          dichromacy
                          spacemacs-light
                          solarized-light
-                         solarized-dark
-                         leuven
+                         ;; solarized-dark
+                         ;; leuven
                          monokai
                          zenburn)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -124,7 +125,7 @@ values."
                                :size 16
                                :weight normal
                                :width normal
-                               :powerline-scale 1.3)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -264,25 +265,30 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
 
+  ;; from here config powerline
+  (setq powerline-default-separator 'arrow)
+
   ;; from here config evil-escape
   (setq-default evil-escape-delay 0.3)
 
   ;; from here config org
-  (with-eval-after-load 'org
-    ;; main setting
-    (setq org-agenda-files '("/Users/mickaushy/Dropbox/org"))
-    (setq org-directory "/Users/mickaushy/Dropbox/org")
-    (setq org-default-notes-file (concat org-directory "gtd.org"))
-    ;; org-agenda
-    (setq org-agenda-time-grid
-          '((daily today require-timed)
-            "----------------"
-            (200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000)))
+  (with-eval-after-load
+   'org
+   ;; main setting
+   (setq org-agenda-files '("/Users/mickaushy/Dropbox/org"))
+   (setq org-directory "/Users/mickaushy/Dropbox/org")
+   (setq org-default-notes-file (concat org-directory "gtd.org"))
+   ;; org-agenda
+   (setq org-agenda-time-grid
+         '((daily today require-timed)
+           "----------------"
+           (200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000)))
 
-    ;; from here org-babel
-    (org-babel-do-load-languages
+   ;; from here org-babel
+   (org-babel-do-load-languages
     'org-babel-load-languages
     '((C . t)
+      (ditaa . t)
       (python . t)
       (R . t)
       (sh . t)

@@ -332,6 +332,7 @@ you should place your code here."
   (setenv  "LANG"      "en_US.UTF-8")
   (setenv  "LC_ALL"    "en_US.UTF-8")
   (setenv  "LC_CTYPE"  "en_US.UTF-8")
+  (setq system-time-locale "C")
 
   (setq powerline-default-separator 'arrow)
 

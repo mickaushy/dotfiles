@@ -360,6 +360,7 @@ you should place your code here."
       (org     . t)
       (python  . t)
       (R       . t)
+      ;;(racket  . t)
       (shell   . t)
       ))
     )

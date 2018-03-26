@@ -353,7 +353,7 @@ you should place your code here."
    ;; main setting
    (setq org-agenda-files '("/Users/mickaushy/Dropbox/org"))
    (setq org-directory "/Users/mickaushy/Dropbox/org")
-   (setq org-default-notes-file (concat org-directory "gtd.org"))
+   (setq org-default-notes-file (concat org-directory "TODO.org"))
    ;; org-agenda
    (setq org-agenda-time-grid
          '((daily today require-timed)

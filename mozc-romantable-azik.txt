@@ -452,6 +452,9 @@ syz	しゃん
 sz	さん
 ta	た
 tb	たび
+tci	てぃ
+tck	てぃん
+tcu	とぅ
 td	てん
 te	て
 tgi	てぃ
@@ -486,11 +489,11 @@ tyw	ちぇい
 tyz	ちゃん
 tz	たん
 u	う
-va	う゛ぁ
-ve	う゛ぇ
-vi	う゛ぃ
-vo	う゛ぉ
-vu	う゛
+va	ヴぁ
+ve	ヴぇ
+vi	ヴぃ
+vo	ヴぉ
+vu	ヴ
 wa	わ
 wd	うぇん
 we	うぇ

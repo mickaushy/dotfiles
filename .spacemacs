@@ -482,13 +482,14 @@ before packages are loaded."
   (setenv  "LC_CTYPE"  "en_US.UTF-8")
   (setq system-time-locale "C")
 
-  ;; powerline
+  ;; powerline & backslash issue on macOS JIS keyboard
   (if (eq system-type 'darwin)
       (progn
         ;; (setq ns-use-srgb-colorspace nil) ; issues/4226
         (setq powerline-image-apple-rgb t) ; milkypostman/powerline/issues/54
         (define-key evil-insert-state-map (kbd "M-¥") [92])
         (define-key evil-ex-search-keymap (kbd "M-¥") [92])
+        (define-key evil-ex-completion-map (kbd "M-¥") [92])
         )
     )
 

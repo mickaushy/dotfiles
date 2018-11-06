@@ -518,7 +518,7 @@ before packages are loaded."
    ;; org-link: pdf option
    (setq org-file-apps
          '((auto-mode . emacs)
-           ("\\.pdf\\'" . "zathura, \"%s\"")
+           ("\\.pdf\\'" . "zathura \"%s\"")
            ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" --page=%1")))
 
    ;; org-babel

@@ -481,7 +481,11 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  ;; locale
+  ;; --------------------
+  ;; general settings
+  ;; --------------------
+
+  ;; locale -------------
   (setenv  "LANG"      "en_US.UTF-8")
   (setenv  "LC_ALL"    "en_US.UTF-8")
   (setenv  "LC_CTYPE"  "en_US.UTF-8")
@@ -500,7 +504,9 @@ before packages are loaded."
 
   (setq-default evil-escape-delay 0.3)
 
-  ;; from here config org
+  ;; --------------------
+  ;; org layer
+  ;; --------------------
   (with-eval-after-load 'org
    ;; main setting
    (setq org-agenda-files '("/Users/mickaushy/Dropbox/org"))
@@ -514,7 +520,7 @@ before packages are loaded."
            "----------------"
            ))
 
-   ;; latex highlight
+   ;; latex highlight in org
    (setq org-highlight-latex-and-related '(latex))
 
    ;; org-link: pdf option
@@ -534,7 +540,7 @@ before packages are loaded."
    (setq org-latex-to-pdf-process
          '("/usr/texbin/lualatex %b"))
 
-   ;; org-babel
+   ;; org-babel ---------
    (org-babel-do-load-languages
     'org-babel-load-languages
     '(
@@ -549,16 +555,35 @@ before packages are loaded."
       ))
    )
 
+  ;; --------------------
   ;; japanese layer
+  ;; --------------------
   (eval-after-load "migemo"
     (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8"))
   (with-eval-after-load "helm"
     (helm-migemo-mode 1))
   (require 'avy-migemo-e.g.ivy)
+  (global-pangu-spacing-mode nil) ;; disable autospace ascii & unicode
 
+  ;; skk settings -------
+  ;; these need to be written here; otherwise written in ~/.skk
+  (setq skk-byte-compile-init-file t)
+  (setq default-input-method "japanese-skk")
+  ;; migemo を使うから skk-isearch にはおとなしくしていて欲しい
+  (setq skk-isearch-start-mode 'latin)
+  ;; disable kana in normal-state
+  ;; https://github.com/zarudama/dotfiles/blob/master/emacs/mikio/mikio-evil.el
+  (when (locate-library "skk")
+    (require 'skk)
+    (defun my-skk-latin-in-normal-state ()
+      (when skk-mode (skk-latin-mode 1)))
+    (add-hook 'evil-normal-state-entry-hook 'my-skk-latin-in-normal-state))
+
+  ;; --------------------
   ;; personal keybindings
-  (spacemacs/declare-prefix "_" "my commands")
-  (spacemacs/set-leader-keys "_j" 'skk-mode)
+  ;; --------------------
+  (spacemacs/declare-prefix "o" "my-cmd.")
+  (spacemacs/set-leader-keys "oj" 'skk-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

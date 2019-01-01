@@ -40,7 +40,6 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     ;; auto-completion
      (auto-completion :variables
                       auto-completion-enable-snippets-in-popup          t
                       auto-completion-enable-help-tooltip               t ;; or 'manual (C-h)
@@ -76,10 +75,10 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-position 'bottom)
      shell-scripts
-
      ;; spell-checking
      syntax-checking
      themes-megapack
+     theming
      twitter
      ranger
      ;; version-control
@@ -562,6 +561,76 @@ before packages are loaded."
 
    (require 'ob-async)
    (setq ob-async-no-async-languages-alist '("ipython"))
+
+   ;; appearance
+   ;; dunno where to define this
+   ;; (let* ((variable-tuple
+   ;;         (cond ((x-list-fonts "YuGothic") '(:font "YuGothic"))
+   ;;               ((x-list-fonts "Osaka")    '(:font "Osaka"))
+   ;;               ((x-list-fonts "YuMincho") '(:font "YuMincho"))
+   ;;               ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+   ;;               (nil (warn "Cannot find a Sans Serif Font.  Install YuMincho."))))
+   ;;        (base-font-color     (face-foreground 'default nil 'default))
+   ;;        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+
+   ;;   (custom-theme-set-faces
+   ;;    'user
+      ;; `(org-level-1 ((t (:foreground ,green-sea))))
+      ;; `(org-level-2 ((t (:foreground ,belize-hole))))
+      ;; `(org-level-3 ((t (:foreground ,wisteria))))
+      ;; `(org-level-4 ((t (:foreground ,orange))))
+      ;; `(org-level-5 ((t (:foreground ,pumpkin))))
+      ;; `(org-level-6 ((t (:foreground ,pomegranate))))
+      ;; `(org-level-7 ((t (:foreground ,turquoise))))
+      ;; `(org-level-8 ((t (:foreground ,emerald))))
+      ;; `(org-level-1 ((t (,@headline ,@variable-tuple :foreground ,green-sea :height 1.4))))
+      ;; `(org-level-2 ((t (,@headline ,@variable-tuple :foreground ,belize-hole :height 1.2))))
+      ;; `(org-level-3 ((t (,@headline ,@variable-tuple :foreground ,wisteria :height 1.15))))
+      ;; `(org-level-4 ((t (,@headline ,@variable-tuple :foreground ,orange :height 1.05))))
+      ;; `(org-level-5 ((t (,@headline ,@variable-tuple :foreground ,pumpkin))))
+      ;; `(org-level-6 ((t (,@headline ,@variable-tuple :foreground ,pomegranate))))
+      ;; `(org-level-7 ((t (,@headline ,@variable-tuple :foreground ,turquoise))))
+      ;; `(org-level-8 ((t (,@headline ,@variable-tuple :foreground ,emerald))))
+      ;; `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))
+
+      ;; '(variable-pitch ((t (:family "YuMincho" :height 1.0 :weight medium))))
+      ;; '(fixed-pitch ((t (:family "Inziu IosevkaCC J" :slant normal :weight normal :height 1.0 :width normal))))
+
+      ;; '(org-block                 ((t (:inherit fixed-pitch))))
+      ;; '(org-document-info         ((t (:foreground "dark orange"))))
+      ;; '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+      ;; '(org-link                  ((t (:inherit fixed-pitch :foreground ,peter-rever :underline t))))
+      ;; '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+      ;; '(org-property-value        ((t (:inherit fixed-pitch))) t)
+      ;; '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+      ;; '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+      ;; '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
+
+      ;; `(org-agenda-date-today ((t (:foreground ,silver :slant italic :weight bold))) t)
+      ;; `(org-agenda-structure ((t (:inherit font-lock-comment-face))))
+      ;; `(org-archived ((t (:foreground ,midnight-blue :weight bold))))
+      ;; `(org-checkbox ((t (:background ,silver :foreground ,wet-asphalt
+      ;;                                 :box (:line-width 1 :style unspecified)))))
+      ;; `(org-date ((t (:foreground ,belize-hole :underline t))))
+      ;; `(org-deadline-announce ((t (:foreground ,alizarin))))
+      ;; `(org-done ((t (:bold t :weight bold :foreground ,emerald))))
+      ;; `(org-formula ((t (:foreground ,sun-flower))))
+      ;; `(org-headline-done ((t (:foreground ,emerald))))
+      ;; `(org-hide ((t (:foreground ,clouds))))
+      ;; `(org-link ((t (:foreground ,peter-river :weight bold))))
+      ;; `(org-scheduled ((t (:foreground ,nephritis))))
+      ;; `(org-special-keyword ((t (:inherit font-lock-comment-face))))
+      ;; `(org-table ((t (:foreground ,asbestos))))
+      ;; `(org-tag ((t (:bold t :weight bold))))
+      ;; `(org-todo ((t (:bold t :foreground ,alizarin :weight bold))))
+      ;; `(org-upcoming-deadline ((t (:inherit font-lock-keyword-face))))
+      ;; `(org-warning ((t (:bold t :foreground ,alizarin :weight bold :underline nil))))
+      ;; `(org-footnote ((t (:foreground ,amethyst :weight bold))))
+      ;; `(org-document-title ((t (:foreground ,wet-asphalt))))
+      ;; `(org-document-info ((t (:foreground ,concrete))))
+   ;;    ))
+
+   ;; (add-hook 'org-mode-hook 'variable-pitch-mode)
    )
 
   ;; --------------------

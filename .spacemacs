@@ -91,7 +91,10 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(ob-async)
+   dotspacemacs-additional-packages '(
+                                      mixed-pitch
+                                      ob-async
+                                      )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -195,15 +198,27 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(flatui
-                         apropospriate-light
-                         dichromacy
+   dotspacemacs-themes '(
+                         material-light
+                         alect-light-alt
                          spacemacs-light
-                         solarized-light
+                         ;; flatui
+                         ;; apropospriate-light
+                         ;; dichromacy
+                         ;; solarized-light
                          ;; solarized-dark
                          ;; leuven
-                         monokai
-                         zenburn)
+                         ;; whiteboard
+                         ;; twilight-bright
+                         ;; tao-yang
+                         ;; tango
+                         ;; occidental
+                         ;; colorsarenice-light
+                         ;; adwaita
+                         ;; default
+                         ;; monokai
+                         ;; zenburn
+                         )
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
@@ -222,7 +237,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-      dotspacemacs-default-font '("Inziu IosevkaCC J"
+   dotspacemacs-default-font '("Sarasa Term J"
                                   :size 14
                                   :weight normal
                                   :width normal)
@@ -361,7 +376,7 @@ It should only modify the values of Spacemacs settings."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 100
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
@@ -444,7 +459,7 @@ It should only modify the values of Spacemacs settings."
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "%b(%m)"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -473,8 +488,104 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
+  ;; locale -------------
+  (setenv  "LANG"      "en_US.UTF-8")
+  (setenv  "LC_ALL"    "en_US.UTF-8")
+  (setenv  "LC_CTYPE"  "en_US.UTF-8")
+  (setq system-time-locale "C")
+
   ;; https://github.com/syl20bnr/spacemacs/issues/10796
   (define-derived-mode anaconda-view-mode special-mode "Anaconda-View")
+
+  (setq initial-frame-alist '((width . 192) (height . 48)))
+
+  ;; --------------------
+  ;; font
+  ;; --------------------
+
+  ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
+  (setq use-default-font-for-symbols nil)
+
+  ;; default
+  (set-fontset-font "fontset-default" 'unicode
+                    (font-spec :family "Sarasa Term J") nil 'prepend)
+
+  ;; serif proportional
+  (create-fontset-from-ascii-font
+   "merriweather:size=13:weight=normal:slant=normal" nil "serif_proportional")
+  (set-fontset-font "fontset-serif_proportional" 'iso-8859-7
+                    (font-spec :family "Merriweather" :height 130) nil 'prepend)
+  (set-fontset-font "fontset-serif_proportional" 'unicode
+                    (font-spec :family "YuMincho" :height 140) nil 'append)
+
+  ;; sans proportional
+  (create-fontset-from-ascii-font
+   "rubik:size=14:weight=normal:slant=normal" nil "sans_proportional")
+  (set-fontset-font "fontset-sans_proportional" 'iso-8859-7
+                    (font-spec :family "Rubik") nil 'prepend)
+  (set-fontset-font "fontset-sans_proportional" 'unicode
+                    (font-spec :family "Hiragino Maru Gothic ProN") nil 'append)
+
+  ;; monospace
+  (create-fontset-from-ascii-font
+   "sarasa term j:size=14:weight=normal:slant=normal" nil "monospace")
+
+  (set-fontset-font
+   "fontset-monospace" 'unicode (font-spec :family "Sarasa Term J") nil 'prepend)
+
+  ;; var/fixed pitch
+  ;; (set-face-attribute 'variable-pitch nil :fontset "fontset-serif_proportional")
+  ;; (set-face-attribute 'fixed-pitch nil :fontset "fontset-monospace")
+
+  ;; theming
+  (setq theming-modifications
+        '((
+           ;; flatui
+           material-light
+           (variable-pitch :font "fontset-serif_proportional")
+           (fixed-pitch    :font "fontset-monospace")
+           (linum          :inherit fixed-pitch :background "#FAFAFA")
+           (org-level-1    :font "fontset-sans_proportional" :box nil)
+           (org-level-2    :font "fontset-sans_proportional" :box nil)
+           (org-level-3    :font "fontset-sans_proportional")
+           (org-level-4    :font "fontset-sans_proportional")
+           (org-level-5    :font "fontset-sans_proportional")
+           (org-level-6    :font "fontset-sans_proportional")
+           (org-level-7    :font "fontset-sans_proportional")
+           (org-level-8    :font "fontset-sans_proportional")
+           (org-indent     :inherit (fixed-pitch org-hide)) ;; important
+           (org-date       :inherit fixed-pitch)
+           (org-block-begin-line    :inherit fixed-pitch :box (:style pressed-button))
+           (org-block-end-line      :inherit fixed-pitch :box (:style released-button))
+           (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
+           (org-code       :inherit fixed-pitch :foreground "grey33")
+           (org-verbatim   :inherit fixed-pitch :foreground "grey47")
+           (org-todo       :inherit fixed-pitch)
+           (org-done       :inherit fixed-pitch)
+           (org-footnote   :inherit fixed-pitch)
+           (org-formula    :inherit fixed-pitch)
+           ;; (org-latex-and-related   :inherit org-default)
+           ;; (org-meta-line  :inherit (fixed-pitch font-lock-comment-face))
+           ;; (org-ellipsis   :inherit variable-pitch :underline nil)
+           ;; (org-block      :inherit fixed-pitch)
+           ;; (org-link       :inherit fixed-pitch)
+           ;; (org-checkbox   :inherit fixed-pitch)
+           ;; (org-table      :inherit fixed-pitch)
+           )))
+
+  ;; fontset
+  (setq face-font-rescale-alist
+        '(
+          (".*Merriweather.*" . 1.0)
+          (".*YuMincho.*" . 1.0)
+          (".*Rubik.*" . 1.0)
+          (".*Hiragino Sans.*" . 1.0)
+          (".*Hiragino Maru Gothic.*" . 1.0)
+          ("-cdac$" . 1.3)
+          ))
+
+  ;; mixed-pitch
+  (add-hook 'text-mode-hook 'mixed-pitch-mode)
   )
 
 (defun dotspacemacs/user-config ()
@@ -487,12 +598,6 @@ before packages are loaded."
   ;; --------------------
   ;; general settings
   ;; --------------------
-
-  ;; locale -------------
-  (setenv  "LANG"      "en_US.UTF-8")
-  (setenv  "LC_ALL"    "en_US.UTF-8")
-  (setenv  "LC_CTYPE"  "en_US.UTF-8")
-  (setq system-time-locale "C")
 
   ;; powerline & backslash issue on macOS JIS keyboard
   (if (eq system-type 'darwin)
@@ -516,6 +621,22 @@ before packages are loaded."
    (setq org-directory "/Users/mickaushy/Dropbox/org")
    (setq org-default-notes-file (concat org-directory "TODO.org"))
    ;; (setq org-export-allow-bind-keywords t)
+
+   ;; org-appearance
+   (setq
+    org-ellipsis                        "    ⟫"
+    org-bullets-bullet-list             '("❏" "❏" "⦂" "⦂" "⦂" "⦂" "⦂" "⦂")
+    ;; ⦂✑☞➩⬭⏢⧖◻⬜⬦⟡✰❖❏⁂✱✲⁑✢✽＊§⎔︙፨》❱❯⟫◿
+    org-pretty-entities                 t
+    org-hidden-keywords                 '(title email)
+    org-hide-emphasis-markers           t
+    org-hide-macro-markers              t
+    org-highlight-latex-and-related     '(latex) ; latex script entities
+    org-fontify-whole-heading-line      t
+    org-fontify-done-headline           nil
+    org-fontify-quote-and-verse-blocks  t
+    )
+
    ;; org-agenda
    (setq org-agenda-time-grid
          '((daily today require-timed)
@@ -523,9 +644,6 @@ before packages are loaded."
            "......"
            "----------------"
            ))
-
-   ;; latex highlight in org
-   (setq org-highlight-latex-and-related '(latex))
 
    ;; org-link: pdf option
    (setq org-file-apps
@@ -562,19 +680,12 @@ before packages are loaded."
    (require 'ob-async)
    (setq ob-async-no-async-languages-alist '("ipython"))
 
-   ;; appearance
-   ;; dunno where to define this
-   ;; (let* ((variable-tuple
-   ;;         (cond ((x-list-fonts "YuGothic") '(:font "YuGothic"))
-   ;;               ((x-list-fonts "Osaka")    '(:font "Osaka"))
-   ;;               ((x-list-fonts "YuMincho") '(:font "YuMincho"))
-   ;;               ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-   ;;               (nil (warn "Cannot find a Sans Serif Font.  Install YuMincho."))))
-   ;;        (base-font-color     (face-foreground 'default nil 'default))
-   ;;        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+   ;; org-download
+   (setq org-download-method 'directory
+         org-download-image-dir "~/Dropbox/org/doc/media")
 
-   ;;   (custom-theme-set-faces
-   ;;    'user
+   ;; (custom-theme-set-faces
+   ;;  'material-light
       ;; `(org-level-1 ((t (:foreground ,green-sea))))
       ;; `(org-level-2 ((t (:foreground ,belize-hole))))
       ;; `(org-level-3 ((t (:foreground ,wisteria))))
@@ -594,7 +705,7 @@ before packages are loaded."
       ;; `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))
 
       ;; '(variable-pitch ((t (:family "YuMincho" :height 1.0 :weight medium))))
-      ;; '(fixed-pitch ((t (:family "Inziu IosevkaCC J" :slant normal :weight normal :height 1.0 :width normal))))
+   ;; '(fixed-pitch ((t (:family "Sarasa Term J" :slant normal :weight normal :height 1.0 :width normal))))
 
       ;; '(org-block                 ((t (:inherit fixed-pitch))))
       ;; '(org-document-info         ((t (:foreground "dark orange"))))
@@ -628,7 +739,11 @@ before packages are loaded."
       ;; `(org-footnote ((t (:foreground ,amethyst :weight bold))))
       ;; `(org-document-title ((t (:foreground ,wet-asphalt))))
       ;; `(org-document-info ((t (:foreground ,concrete))))
-   ;;    ))
+    ;; )
+
+   (add-hook 'text-mode-hook
+             (lambda ()
+               (push '(" x " . ?×) prettify-symbols-alist)))
 
    ;; (add-hook 'org-mode-hook 'variable-pitch-mode)
    )
@@ -643,6 +758,16 @@ before packages are loaded."
   (require 'avy-migemo-e.g.ivy)
   (setq pangu-spacing-real-insert-separtor nil)
   (global-pangu-spacing-mode nil) ;; disable autospace ascii & unicode
+  ;; also exclude´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗µ
+  ;; source: https://github.com/coldnew/pangu-spacing/blob/master/pangu-spacing.el
+  ;; (setq latin-and-separator
+  ;;       "、。，！？；：「」（）´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗")
+  (setq pangu-spacing-chinese-before-english-regexp-exclude
+        (rx (group-n 1 (or (in "、。，！？；：「」（）´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗")))
+            (group-n 2 (in "a-zA-Z0-9"))))
+  (setq pangu-spacing-chinese-after-english-regexp-exclude
+        (rx (group-n 1 (in "a-zA-Z0-9"))
+            (group-n 2 (or (in "、。，！？；：「」（）´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗")))))
 
   ;; skk settings -------
   ;; these need to be written here; otherwise written in ~/.skk
@@ -697,13 +822,9 @@ This function is called at the very end of Spacemacs initialization."
      ivy--highlight-default-migemo ivy-occur-revert-buffer-migemo ivy-occur-press-migemo avy-migemo-goto-char avy-migemo-goto-char-2 avy-migemo-goto-char-in-line avy-migemo-goto-char-timer avy-migemo-goto-subword-1 avy-migemo-goto-word-1 avy-migemo-isearch avy-migemo-org-goto-heading-timer avy-migemo--overlay-at avy-migemo--overlay-at-full)))
  '(package-selected-packages
    (quote
-    (ob-async company-auctex auctex company-quickhelp pangu-spacing japanese-holidays evil-tutor-ja ddskk cdb ccc avy-migemo migemo zen-and-art-theme pug-mode company-ghc zenburn-theme yasnippet-snippets yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twittering-mode twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme realgud ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme proof-general professional-theme popwin planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme nameless mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lorem-ipsum live-py-mode linum-relative link-hint light-soap-theme jbeans-theme jazz-theme ir-black-theme intero insert-shebang inkpot-theme indent-guide importmagic impatient-mode hy-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate google-c-style golden-ratio gnuplot github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist ghc gh-md gandalf-theme fuzzy font-lock+ flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dracula-theme django-theme disaster diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme cython-mode cyberpunk-theme csv-mode counsel-projectile company-web company-statistics company-shell company-rtags company-ghci company-coq company-cabal company-c-headers company-anaconda command-log-mode column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
- '(safe-local-variable-values (quote ((org-export-allow-bind-keywords . t)))))
-(custom-set-faces
+    (mixed-pitch ob-async company-auctex auctex company-quickhelp pangu-spacing japanese-holidays evil-tutor-ja ddskk cdb ccc avy-migemo migemo zen-and-art-theme pug-mode company-ghc zenburn-theme yasnippet-snippets yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twittering-mode twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme realgud ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme proof-general professional-theme popwin planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme nameless mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lorem-ipsum live-py-mode linum-relative link-hint light-soap-theme jbeans-theme jazz-theme ir-black-theme intero insert-shebang inkpot-theme indent-guide importmagic impatient-mode hy-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate google-c-style golden-ratio gnuplot github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist ghc gh-md gandalf-theme fuzzy font-lock+ flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dracula-theme django-theme disaster diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme cython-mode cyberpunk-theme csv-mode counsel-projectile company-web company-statistics company-shell company-rtags company-ghci company-coq company-cabal company-c-headers company-anaconda command-log-mode column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
 )

@@ -77,6 +77,7 @@ This function should only modify configuration layer settings."
      shell-scripts
      ;; spell-checking
      syntax-checking
+     table-manipulation
      themes-megapack
      theming
      twitter
@@ -92,7 +93,7 @@ This function should only modify configuration layer settings."
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
-                                      mixed-pitch
+                                      ;; mixed-pitch
                                       ob-async
                                       )
 
@@ -506,86 +507,243 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
   (setq use-default-font-for-symbols nil)
 
-  ;; default
-  (set-fontset-font "fontset-default" 'unicode
-                    (font-spec :family "Sarasa Term J") nil 'prepend)
+  ;; https://www.shimmy1996.com/en/posts/2018-06-24-fun-with-fonts-in-emacs/
+
+  ;; (defun my/create-fontset (fontset1 latinfont cjkfont)
+  ;;   (set-fontset-font fontset1 'latin
+  ;;                     (font-spec :family latinfont) nil 'append)
+  ;;   (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
+  ;;     (set-fontset-font fontset1 charset
+  ;;                       (font-spec :family cjkfont) nil 'prepend))
+  ;;   )
+
+  ;; (defvar serif_proportional
+  ;;   (create-fontset-from-fontset-spec standard-fontset-spec)
+  ;;   "Standard fontset for user.")
+  ;; (my/create-fontset serif-proportional "merriweather" "Noto Serif CJK JP")
+
+  ;; (defvar sans_proportional
+  ;;   (create-fontset-from-fontset-spec standard-fontset-spec)
+  ;;   "Standard fontset for user.")
+  ;; (my/create-fontset sans-proportional "rubik" "Hiragino Maru Gothic ProN")
 
   ;; serif proportional
-  (create-fontset-from-ascii-font
-   "merriweather:size=13:weight=normal:slant=normal" nil "serif_proportional")
-  (set-fontset-font "fontset-serif_proportional" 'iso-8859-7
-                    (font-spec :family "Merriweather" :height 130) nil 'prepend)
-  (set-fontset-font "fontset-serif_proportional" 'unicode
-                    (font-spec :family "YuMincho" :height 140) nil 'append)
+  ;; -*-merriweather-normal-normal-normal-*-*-*-*-*-p-0-fontset-serif_proportional
+  ;; (create-fontset-from-ascii-font
+  ;;  "merriweather:weight=normal:slant=normal" nil "serif_proportional")
+  ;; fallback
+  ;; (create-fontset-from-fontset-spec
+  ;;  "-*-Arial Unicode MS-normal-normal-normal-*-*-*-*-*-m-*-fontset-serif_proportional")
+  ;; ;; (set-fontset-font "fontset-serif_proportional" 'unicode
+  ;; ;;                   (font-spec :family "Noto Serif CJK JP") nil 'append)
+  ;; (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
+  ;;   (set-fontset-font "fontset-serif_proportional" charset
+  ;;                     (font-spec :family "Noto Serif CJK JP") nil 'append))
+  ;; (set-fontset-font "fontset-serif_proportional" 'latin
+  ;;                   (font-spec :family "merriweather") nil 'append)
 
   ;; sans proportional
-  (create-fontset-from-ascii-font
-   "rubik:size=14:weight=normal:slant=normal" nil "sans_proportional")
-  (set-fontset-font "fontset-sans_proportional" 'iso-8859-7
-                    (font-spec :family "Rubik") nil 'prepend)
-  (set-fontset-font "fontset-sans_proportional" 'unicode
-                    (font-spec :family "Hiragino Maru Gothic ProN") nil 'append)
+  ;; (create-fontset-from-ascii-font
+  ;;  "rubik:weight=normal:slant=normal" nil "sans_proportional")
+  ;; (create-fontset-from-fontset-spec
+  ;;  "-*-Arial Unicode MS-normal-normal-normal-*-*-*-*-*-m-*-fontset-sans_proportional")
+  ;; ;; (set-fontset-font "fontset-sans_proportional" 'unicode
+  ;; ;;                   (font-spec :family "Hiragino Maru Gothic ProN") nil 'append)
+  ;; (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
+  ;;   (set-fontset-font "fontset-sans_proportional" charset
+  ;;                     (font-spec :family "Hiragino Maru Gothic ProN") nil 'append))
+  ;; (set-fontset-font "fontset-sans_proportional" 'latin
+  ;;                   (font-spec :family "Rubik") nil 'append)
 
   ;; monospace
-  (create-fontset-from-ascii-font
-   "sarasa term j:size=14:weight=normal:slant=normal" nil "monospace")
+  ;; (create-fontset-from-ascii-font
+  ;;  "sarasa term j:size=14:weight=normal:slant=normal" nil "monospace")
 
-  (set-fontset-font
-   "fontset-monospace" 'unicode (font-spec :family "Sarasa Term J") nil 'prepend)
+  ;; (set-fontset-font
+  ;;  "fontset-monospace" 'unicode (font-spec :family "Sarasa Term J") nil 'prepend)
+
+  ;; greek:vollkorn,
+  (create-fontset-from-fontset-spec
+   "-*-noto serif cjk j-medium-r-normal-*-*-*-*-*-p-*-fontset-serif_proportional,
+   latin:merriweather:width=regular,
+   cyrillic:vollkorn,
+   han:noto serif cjk j,
+   kana:noto serif cjk j,
+   hangul:noto serif cjk kr,
+   bopomofo:noto serif cjk tc"
+   )
+
+  ;; greek:sarasa ui j,
+  (create-fontset-from-fontset-spec
+   "-*-sarasa ui j-regular-r-normal-*-*-*-*-*-p-*-fontset-sans_proportional,
+   latin:rubik:weight=medium,
+   cyrillic:rubik:weight=medium,
+   han:sarasa ui j,
+   kana:sarasa ui j,
+   bopomofo:sarasa ui tc"
+   )
+
+  ;; greek:sarasa term j,
+  (create-fontset-from-fontset-spec
+   "-*-sarasa term j-regular-r-normal-*-*-*-*-*-m-*-fontset-monospace,
+   latin:sarasa term j,
+   cyrillic:sarasa term j,
+   kana:sarasa term j,
+   han:sarasa term j,
+   bopomofo:sarasa term tc"
+   )
 
   ;; var/fixed pitch
-  ;; (set-face-attribute 'variable-pitch nil :fontset "fontset-serif_proportional")
-  ;; (set-face-attribute 'fixed-pitch nil :fontset "fontset-monospace")
+  (set-face-attribute 'variable-pitch nil :font "fontset-serif_proportional" :fontset "fontset-serif_proportional")
+  (set-face-attribute 'fixed-pitch nil :font "fontset-monospace" :fontset "fontset-monospace")
 
   ;; theming
+  ;; nth theme in theming-mods. there is only one of theme to be mod'ed, so 0.
+  (setq mytheme0-faces '(
+                         (variable-pitch :fontset "fontset-serif_proportional" :font "fontset-serif_proportional")
+                         (fixed-pitch    :fontset "fontset-sans_proportional" :font "fontset-monospace")
+                         (linum          :inherit fixed-pitch :background "#FAFAFA")
+                         ;; org-mode
+                         (org-default    :inherit variable-pitch)
+                         (org-indent     :inherit (fixed-pitch org-hide)) ;; important
+                         (org-meta-line  :inherit (fixed-pitch font-lock-comment-face))
+                         (org-code       :inherit fixed-pitch :foreground "grey33")
+                         (org-verbatim   :inherit fixed-pitch :foreground "grey47")
+                         (org-ellipsis   :inherit variable-pitch :underline nil)
+                         (org-block-begin-line    :inherit fixed-pitch :box nil :background "#FAFAFA")
+                         (org-block-end-line      :inherit fixed-pitch :box nil :background "#FAFAFA")
+                         (org-latex-and-related   :inherit org-formula)
+                         (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
+                         ;; company-mode
+                         ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
+                         ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
+                         ;; (company-tooltip-common)               ; inherit company-tooltip
+                         ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
+                         ;; (company-tooltip-mouse)                ; inherit highlight
+                         ;; (company-tooltip-search)               ; inherit highlight
+                         ;; (company-tooltip-search-selection)     ; inherit highlight
+                         ))
+
+  (message (format "value for %s is %s."
+                   'spacemacs--theming-header-faces
+                   spacemacs--theming-header-faces))
+  (dolist (org-level-x '(org-level-1 org-level-2 org-level-3 org-level-4
+                         org-level-5 org-level-6 org-level-7 org-level-8))
+    (add-to-list 'mytheme0-faces
+                 (list org-level-x :fontset '"fontset-sans_proportional"
+                                   :font '"fontset-sans_proportional"
+                                   :box nil)))
+
+  (dolist (fixed-faces '(;; org-mode
+                          org-kbd
+                          org-date
+                          org-todo
+                          org-done
+                          org-footnote
+                          org-formula
+                          org-link
+                          org-block
+                          org-checkbox
+                          org-table
+                          org-ellipsis
+                          ;; company-mode
+                          company-echo
+                          company-echo-common
+                          company-preview
+                          company-preview-common
+                          company-scrollbar-bg
+                          company-scrollbar-fg
+                          company-template-field
+                          company-tooltip
+                          company-tooltip-annotation
+                          company-tooltip-selection))
+    (add-to-list 'mytheme0-faces
+                 (list fixed-faces :inherit 'fixed-pitch) t)) ;; t to append
+
+  (add-to-list 'mytheme0-faces 'material-light)
+
   (setq theming-modifications
-        '((
-           ;; flatui
-           material-light
-           (variable-pitch :font "fontset-serif_proportional")
-           (fixed-pitch    :font "fontset-monospace")
-           (linum          :inherit fixed-pitch :background "#FAFAFA")
-           (org-level-1    :font "fontset-sans_proportional" :box nil)
-           (org-level-2    :font "fontset-sans_proportional" :box nil)
-           (org-level-3    :font "fontset-sans_proportional")
-           (org-level-4    :font "fontset-sans_proportional")
-           (org-level-5    :font "fontset-sans_proportional")
-           (org-level-6    :font "fontset-sans_proportional")
-           (org-level-7    :font "fontset-sans_proportional")
-           (org-level-8    :font "fontset-sans_proportional")
-           (org-indent     :inherit (fixed-pitch org-hide)) ;; important
-           (org-date       :inherit fixed-pitch)
-           (org-block-begin-line    :inherit fixed-pitch :box (:style pressed-button))
-           (org-block-end-line      :inherit fixed-pitch :box (:style released-button))
-           (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
-           (org-code       :inherit fixed-pitch :foreground "grey33")
-           (org-verbatim   :inherit fixed-pitch :foreground "grey47")
-           (org-todo       :inherit fixed-pitch)
-           (org-done       :inherit fixed-pitch)
-           (org-footnote   :inherit fixed-pitch)
-           (org-formula    :inherit fixed-pitch)
-           ;; (org-latex-and-related   :inherit org-default)
-           ;; (org-meta-line  :inherit (fixed-pitch font-lock-comment-face))
-           ;; (org-ellipsis   :inherit variable-pitch :underline nil)
-           ;; (org-block      :inherit fixed-pitch)
-           ;; (org-link       :inherit fixed-pitch)
-           ;; (org-checkbox   :inherit fixed-pitch)
-           ;; (org-table      :inherit fixed-pitch)
-           )))
+        (list mytheme0-faces))
+
+  ;; (setq theming-modifications
+  ;;       '((material-light ;; 0th theme. cdr of this:'mytheme0-faces
+  ;;          (variable-pitch :fontset "fontset-serif_proportional" :font "fontset-serif_proportional")
+  ;;          (fixed-pitch    :fontset "fontset-sans_proportional" :font "fontset-monospace")
+  ;;          (linum          :inherit fixed-pitch :background "#FAFAFA")
+  ;;          ;; org-mode
+  ;;          (org-default    :inherit variable-pitch)
+  ;;          ;; (org-level-1    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          ;; (org-level-2    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          ;; (org-level-3    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          ;; (org-level-4    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          ;; (org-level-5    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          ;; (org-level-6    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          ;; (org-level-7    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          ;; (org-level-8    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
+  ;;          (org-indent     :inherit (fixed-pitch org-hide)) ;; important
+  ;;          (org-meta-line  :inherit (fixed-pitch font-lock-comment-face))
+  ;;          (org-code       :inherit fixed-pitch :foreground "grey33")
+  ;;          (org-verbatim   :inherit fixed-pitch :foreground "grey47")
+  ;;          ;; (org-kbd        :inherit fixed-pitch)
+  ;;          ;; (org-date       :inherit fixed-pitch)
+  ;;          ;; (org-todo       :inherit fixed-pitch)
+  ;;          ;; (org-done       :inherit fixed-pitch)
+  ;;          ;; (org-footnote   :inherit fixed-pitch)
+  ;;          ;; (org-formula    :inherit fixed-pitch)
+  ;;          ;; (org-link       :inherit fixed-pitch)
+  ;;          ;; (org-block      :inherit fixed-pitch)
+  ;;          ;; (org-checkbox   :inherit fixed-pitch)
+  ;;          ;; (org-table      :inherit fixed-pitch)
+  ;;          (org-ellipsis   :inherit variable-pitch :underline nil)
+  ;;          (org-block-begin-line    :inherit fixed-pitch :box nil :background "#FAFAFA")
+  ;;          (org-block-end-line      :inherit fixed-pitch :box nil :background "#FAFAFA")
+  ;;          (org-latex-and-related   :inherit org-formula)
+  ;;          (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
+  ;;          ;; ;; company
+  ;;          ;; (company-echo :inherit fixed-pitch)
+  ;;          ;; (company-echo-common :inherit fixed-pitch)
+  ;;          ;; (company-preview :inherit fixed-pitch)
+  ;;          ;; (company-preview-common :inherit fixed-pitch)
+  ;;          ;; ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
+  ;;          ;; (company-scrollbar-bg :inherit fixed-pitch)
+  ;;          ;; (company-scrollbar-fg :inherit fixed-pitch)
+  ;;          ;; (company-template-field :inherit fixed-pitch)
+  ;;          ;; (company-tooltip :inherit fixed-pitch)
+  ;;          ;; (company-tooltip-annotation :inherit fixed-pitch)
+  ;;          ;; ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
+  ;;          ;; ;; (company-tooltip-common)               ; inherit company-tooltip
+  ;;          ;; ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
+  ;;          ;; ;; (company-tooltip-mouse)                ; inherit highlight
+  ;;          ;; ;; (company-tooltip-search)               ; inherit highlight
+  ;;          ;; ;; (company-tooltip-search-selection)     ; inherit highlight
+  ;;          ;; (company-tooltip-selection :inherit fixed-pitch)
+  ;;          ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
+  ;;          ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
+  ;;          ;; (company-tooltip-common)               ; inherit company-tooltip
+  ;;          ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
+  ;;          ;; (company-tooltip-mouse)                ; inherit highlight
+  ;;          ;; (company-tooltip-search)               ; inherit highlight
+  ;;          ;; (company-tooltip-search-selection)     ; inherit highlight
+  ;;          )
+  ;;         ))
+
+  ;; nth theme in theming-mods. there is only one of theme to be mod'ed, so 0.
+  ;; (setq mytheme0-faces (cdr (nth 0 theming-modifications)))
+
 
   ;; fontset
   (setq face-font-rescale-alist
         '(
-          (".*Merriweather.*" . 1.0)
-          (".*YuMincho.*" . 1.0)
+          (".*Noto Serif CJK.*" . 1.0)
           (".*Rubik.*" . 1.0)
+          (".*Vollkorn.*" . 1.09)
+          ;; (".*mononoki.*" . 0.92)
+          (".*merriweeather.*" . 0.90)
           (".*Hiragino Sans.*" . 1.0)
-          (".*Hiragino Maru Gothic.*" . 1.0)
+          (".*sarasa ui.*" . 1.0)
+          (".*STIX.*" . 0.96)
           ("-cdac$" . 1.3)
           ))
-
-  ;; mixed-pitch
-  (add-hook 'text-mode-hook 'mixed-pitch-mode)
   )
 
 (defun dotspacemacs/user-config ()
@@ -598,6 +756,9 @@ before packages are loaded."
   ;; --------------------
   ;; general settings
   ;; --------------------
+
+  ;; mixed-pitch -> var
+  (add-hook 'text-mode-hook 'variable-pitch-mode)
 
   ;; powerline & backslash issue on macOS JIS keyboard
   (if (eq system-type 'darwin)
@@ -684,63 +845,6 @@ before packages are loaded."
    (setq org-download-method 'directory
          org-download-image-dir "~/Dropbox/org/doc/media")
 
-   ;; (custom-theme-set-faces
-   ;;  'material-light
-      ;; `(org-level-1 ((t (:foreground ,green-sea))))
-      ;; `(org-level-2 ((t (:foreground ,belize-hole))))
-      ;; `(org-level-3 ((t (:foreground ,wisteria))))
-      ;; `(org-level-4 ((t (:foreground ,orange))))
-      ;; `(org-level-5 ((t (:foreground ,pumpkin))))
-      ;; `(org-level-6 ((t (:foreground ,pomegranate))))
-      ;; `(org-level-7 ((t (:foreground ,turquoise))))
-      ;; `(org-level-8 ((t (:foreground ,emerald))))
-      ;; `(org-level-1 ((t (,@headline ,@variable-tuple :foreground ,green-sea :height 1.4))))
-      ;; `(org-level-2 ((t (,@headline ,@variable-tuple :foreground ,belize-hole :height 1.2))))
-      ;; `(org-level-3 ((t (,@headline ,@variable-tuple :foreground ,wisteria :height 1.15))))
-      ;; `(org-level-4 ((t (,@headline ,@variable-tuple :foreground ,orange :height 1.05))))
-      ;; `(org-level-5 ((t (,@headline ,@variable-tuple :foreground ,pumpkin))))
-      ;; `(org-level-6 ((t (,@headline ,@variable-tuple :foreground ,pomegranate))))
-      ;; `(org-level-7 ((t (,@headline ,@variable-tuple :foreground ,turquoise))))
-      ;; `(org-level-8 ((t (,@headline ,@variable-tuple :foreground ,emerald))))
-      ;; `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))
-
-      ;; '(variable-pitch ((t (:family "YuMincho" :height 1.0 :weight medium))))
-   ;; '(fixed-pitch ((t (:family "Sarasa Term J" :slant normal :weight normal :height 1.0 :width normal))))
-
-      ;; '(org-block                 ((t (:inherit fixed-pitch))))
-      ;; '(org-document-info         ((t (:foreground "dark orange"))))
-      ;; '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-      ;; '(org-link                  ((t (:inherit fixed-pitch :foreground ,peter-rever :underline t))))
-      ;; '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-      ;; '(org-property-value        ((t (:inherit fixed-pitch))) t)
-      ;; '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-      ;; '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-      ;; '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
-
-      ;; `(org-agenda-date-today ((t (:foreground ,silver :slant italic :weight bold))) t)
-      ;; `(org-agenda-structure ((t (:inherit font-lock-comment-face))))
-      ;; `(org-archived ((t (:foreground ,midnight-blue :weight bold))))
-      ;; `(org-checkbox ((t (:background ,silver :foreground ,wet-asphalt
-      ;;                                 :box (:line-width 1 :style unspecified)))))
-      ;; `(org-date ((t (:foreground ,belize-hole :underline t))))
-      ;; `(org-deadline-announce ((t (:foreground ,alizarin))))
-      ;; `(org-done ((t (:bold t :weight bold :foreground ,emerald))))
-      ;; `(org-formula ((t (:foreground ,sun-flower))))
-      ;; `(org-headline-done ((t (:foreground ,emerald))))
-      ;; `(org-hide ((t (:foreground ,clouds))))
-      ;; `(org-link ((t (:foreground ,peter-river :weight bold))))
-      ;; `(org-scheduled ((t (:foreground ,nephritis))))
-      ;; `(org-special-keyword ((t (:inherit font-lock-comment-face))))
-      ;; `(org-table ((t (:foreground ,asbestos))))
-      ;; `(org-tag ((t (:bold t :weight bold))))
-      ;; `(org-todo ((t (:bold t :foreground ,alizarin :weight bold))))
-      ;; `(org-upcoming-deadline ((t (:inherit font-lock-keyword-face))))
-      ;; `(org-warning ((t (:bold t :foreground ,alizarin :weight bold :underline nil))))
-      ;; `(org-footnote ((t (:foreground ,amethyst :weight bold))))
-      ;; `(org-document-title ((t (:foreground ,wet-asphalt))))
-      ;; `(org-document-info ((t (:foreground ,concrete))))
-    ;; )
-
    (add-hook 'text-mode-hook
              (lambda ()
                (push '(" x " . ?×) prettify-symbols-alist)))
@@ -798,8 +902,11 @@ before packages are loaded."
   ;; --------------------
   (spacemacs/declare-prefix "o" "my-cmd.")
   (spacemacs/set-leader-keys "oj" 'skk-mode)
-  (spacemacs/set-leader-keys "oc" 'count-words-region)
+  (spacemacs/set-leader-keys "oT"
+    'spacemacs/table-manipulation-transient-state/body)
+  ;; (spacemacs/set-leader-keys "oc" 'count-words-region) -> SPC x c there is
   ;; you can also write like: (spacemacs/set-leader-keys "f" '("foo" . long-name-for-command-foo))
+  ;; in that case, you need extra switch to tern on
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -822,9 +929,4 @@ This function is called at the very end of Spacemacs initialization."
      ivy--highlight-default-migemo ivy-occur-revert-buffer-migemo ivy-occur-press-migemo avy-migemo-goto-char avy-migemo-goto-char-2 avy-migemo-goto-char-in-line avy-migemo-goto-char-timer avy-migemo-goto-subword-1 avy-migemo-goto-word-1 avy-migemo-isearch avy-migemo-org-goto-heading-timer avy-migemo--overlay-at avy-migemo--overlay-at-full)))
  '(package-selected-packages
    (quote
-    (mixed-pitch ob-async company-auctex auctex company-quickhelp pangu-spacing japanese-holidays evil-tutor-ja ddskk cdb ccc avy-migemo migemo zen-and-art-theme pug-mode company-ghc zenburn-theme yasnippet-snippets yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twittering-mode twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme realgud ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme proof-general professional-theme popwin planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme nameless mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lorem-ipsum live-py-mode linum-relative link-hint light-soap-theme jbeans-theme jazz-theme ir-black-theme intero insert-shebang inkpot-theme indent-guide importmagic impatient-mode hy-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate google-c-style golden-ratio gnuplot github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist ghc gh-md gandalf-theme fuzzy font-lock+ flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dracula-theme django-theme disaster diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme cython-mode cyberpunk-theme csv-mode counsel-projectile company-web company-statistics company-shell company-rtags company-ghci company-coq company-cabal company-c-headers company-anaconda command-log-mode column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-)
+    (mixed-pitch ob-async company-auctex auctex company-quickhelp pangu-spacing japanese-holidays evil-tutor-ja ddskk cdb ccc avy-migemo migemo zen-and-art-theme pug-mode company-ghc zenburn-theme yasnippet-snippets yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twittering-mode twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme realgud ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme proof-general professional-theme popwin planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme nameless mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lorem-ipsum live-py-mode linum-relative link-hint light-soap-theme jbeans-theme jazz-theme ir-black-theme intero insert-shebang inkpot-theme indent-guide importmagic impatient-mode hy-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate google-c-style golden-ratio gnuplot github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist ghc gh-md gandalf-theme fuzzy font-lock+ flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump dracula-theme django-theme disaster diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dante dakrone-theme cython-mode cyberpunk-theme csv-mode counsel-projectile company-web company-statistics company-shell company-rtags company-ghci company-coq company-cabal company-c-headers company-anaconda command-log-mode column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode cmm-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))))

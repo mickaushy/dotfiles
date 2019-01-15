@@ -238,7 +238,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Sarasa Term J"
+   dotspacemacs-default-font '("Sarasa Mono T J"
                                   :size 14
                                   :weight normal
                                   :width normal)
@@ -557,10 +557,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; monospace
   ;; (create-fontset-from-ascii-font
-  ;;  "sarasa term j:size=14:weight=normal:slant=normal" nil "monospace")
+  ;;  "sarasa mono j:size=14:weight=normal:slant=normal" nil "monospace")
 
   ;; (set-fontset-font
-  ;;  "fontset-monospace" 'unicode (font-spec :family "Sarasa Term J") nil 'prepend)
+  ;;  "fontset-monospace" 'unicode (font-spec :family "Sarasa Mono T J") nil 'prepend)
 
   ;; greek:vollkorn,
   (create-fontset-from-fontset-spec
@@ -583,14 +583,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    bopomofo:sarasa ui tc"
    )
 
-  ;; greek:sarasa term j,
+  ;; greek:sarasa mono t j,
   (create-fontset-from-fontset-spec
-   "-*-sarasa term j-regular-r-normal-*-*-*-*-*-m-*-fontset-monospace,
-   latin:sarasa term j,
-   cyrillic:sarasa term j,
-   kana:sarasa term j,
-   han:sarasa term j,
-   bopomofo:sarasa term tc"
+   "-*-sarasa mono t j-regular-r-normal-*-*-*-*-*-m-*-fontset-monospace,
+   latin:sarasa mono t j,
+   cyrillic:sarasa mono t j,
+   kana:sarasa mono t j,
+   han:sarasa mono t j,
+   bopomofo:sarasa mono t tc"
    )
 
   ;; var/fixed pitch
@@ -598,41 +598,67 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (set-face-attribute 'fixed-pitch nil :font "fontset-monospace" :fontset "fontset-monospace")
 
   ;; theming
-  ;; nth theme in theming-mods. there is only one of theme to be mod'ed, so 0.
-  (setq mytheme0-faces '(
-                         (variable-pitch :fontset "fontset-serif_proportional" :font "fontset-serif_proportional")
-                         (fixed-pitch    :fontset "fontset-sans_proportional" :font "fontset-monospace")
-                         (linum          :inherit fixed-pitch :background "#FAFAFA")
-                         ;; org-mode
-                         (org-default    :inherit variable-pitch)
-                         (org-indent     :inherit (fixed-pitch org-hide)) ;; important
-                         (org-meta-line  :inherit (fixed-pitch font-lock-comment-face))
-                         (org-code       :inherit fixed-pitch :foreground "grey33")
-                         (org-verbatim   :inherit fixed-pitch :foreground "grey47")
-                         (org-ellipsis   :inherit variable-pitch :underline nil)
-                         (org-block-begin-line    :inherit fixed-pitch :box nil :background "#FAFAFA")
-                         (org-block-end-line      :inherit fixed-pitch :box nil :background "#FAFAFA")
-                         (org-latex-and-related   :inherit org-formula)
-                         (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
-                         ;; company-mode
-                         ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
-                         ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
-                         ;; (company-tooltip-common)               ; inherit company-tooltip
-                         ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
-                         ;; (company-tooltip-mouse)                ; inherit highlight
-                         ;; (company-tooltip-search)               ; inherit highlight
-                         ;; (company-tooltip-search-selection)     ; inherit highlight
-                         ))
+  (setq-default my/material-light-faces
+                '(
+                  (variable-pitch :fontset "fontset-serif_proportional" :font "fontset-serif_proportional")
+                  (fixed-pitch    :fontset "fontset-sans_proportional" :font "fontset-monospace")
+                  (linum          :inherit fixed-pitch :background "#FAFAFA")
+                  ;; org-mode
+                  (org-default    :inherit variable-pitch)
+                  (org-indent     :inherit (fixed-pitch org-hide)) ;; important
+                  (org-meta-line  :inherit (fixed-pitch font-lock-comment-face))
+                  (org-code       :inherit fixed-pitch :foreground "grey33")
+                  (org-verbatim   :inherit fixed-pitch :foreground "grey47")
+                  (org-ellipsis   :inherit variable-pitch :underline nil)
+                  (org-document-title      :scale 1.35 :weight bold)
+                  (org-block-begin-line    :inherit fixed-pitch :box nil :background "#FAFAFA")
+                  (org-block-end-line      :inherit fixed-pitch :box nil :background "#FAFAFA")
+                  (org-latex-and-related   :inherit org-formula)
+                  (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
+                  ;; company-mode: no need to set (these just inherit)
+                  ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
+                  ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
+                  ;; (company-tooltip-common)               ; inherit company-tooltip
+                  ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
+                  ;; (company-tooltip-mouse)                ; inherit highlight
+                  ;; (company-tooltip-search)               ; inherit highlight
+                  ;; (company-tooltip-search-selection)     ; inherit highlight
+                  ))
 
-  (message (format "value for %s is %s."
-                   'spacemacs--theming-header-faces
-                   spacemacs--theming-header-faces))
-  (dolist (org-level-x '(org-level-1 org-level-2 org-level-3 org-level-4
-                         org-level-5 org-level-6 org-level-7 org-level-8))
-    (add-to-list 'mytheme0-faces
-                 (list org-level-x :fontset '"fontset-sans_proportional"
-                                   :font '"fontset-sans_proportional"
-                                   :box nil)))
+  (dolist (text-title-faces (reverse ;; from theming: spacemacs--theming-header-faces
+                             '(font-latex-sectioning-0-face
+                               font-latex-sectioning-1-face
+                               font-latex-sectioning-2-face
+                               font-latex-sectioning-3-face
+                               font-latex-sectioning-4-face
+                               font-latex-sectioning-5-face
+                               font-latex-slide-title-face
+                               info-title-1
+                               info-title-2
+                               info-title-3
+                               info-title-4
+                               markdown-header-face
+                               markdown-header-face-1
+                               markdown-header-face-2
+                               markdown-header-face-3
+                               markdown-header-face-4
+                               markdown-header-face-5
+                               markdown-header-face-6
+                               org-document-title
+                               org-level-1
+                               org-level-2
+                               org-level-3
+                               org-level-4
+                               org-level-5
+                               org-level-6
+                               org-level-7
+                               org-level-8)
+                             ))
+    (add-to-list 'my/material-light-faces
+                 (list text-title-faces
+                       :fontset "fontset-sans_proportional"
+                       :font    "fontset-sans_proportional"
+                       :box     nil)))
 
   (dolist (fixed-faces '(;; org-mode
                           org-kbd
@@ -657,79 +683,15 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                           company-tooltip
                           company-tooltip-annotation
                           company-tooltip-selection))
-    (add-to-list 'mytheme0-faces
+    (add-to-list 'my/material-light-faces
                  (list fixed-faces :inherit 'fixed-pitch) t)) ;; t to append
 
-  (add-to-list 'mytheme0-faces 'material-light)
+  ;; (message (format "value for %s is %s."
+  ;;                  'my/material-light-faces
+  ;;                  my/material-light-faces))
 
-  (setq theming-modifications
-        (list mytheme0-faces))
-
-  ;; (setq theming-modifications
-  ;;       '((material-light ;; 0th theme. cdr of this:'mytheme0-faces
-  ;;          (variable-pitch :fontset "fontset-serif_proportional" :font "fontset-serif_proportional")
-  ;;          (fixed-pitch    :fontset "fontset-sans_proportional" :font "fontset-monospace")
-  ;;          (linum          :inherit fixed-pitch :background "#FAFAFA")
-  ;;          ;; org-mode
-  ;;          (org-default    :inherit variable-pitch)
-  ;;          ;; (org-level-1    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          ;; (org-level-2    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          ;; (org-level-3    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          ;; (org-level-4    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          ;; (org-level-5    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          ;; (org-level-6    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          ;; (org-level-7    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          ;; (org-level-8    :fontset "fontset-sans_proportional" :font "fontset-sans_proportional" :box nil)
-  ;;          (org-indent     :inherit (fixed-pitch org-hide)) ;; important
-  ;;          (org-meta-line  :inherit (fixed-pitch font-lock-comment-face))
-  ;;          (org-code       :inherit fixed-pitch :foreground "grey33")
-  ;;          (org-verbatim   :inherit fixed-pitch :foreground "grey47")
-  ;;          ;; (org-kbd        :inherit fixed-pitch)
-  ;;          ;; (org-date       :inherit fixed-pitch)
-  ;;          ;; (org-todo       :inherit fixed-pitch)
-  ;;          ;; (org-done       :inherit fixed-pitch)
-  ;;          ;; (org-footnote   :inherit fixed-pitch)
-  ;;          ;; (org-formula    :inherit fixed-pitch)
-  ;;          ;; (org-link       :inherit fixed-pitch)
-  ;;          ;; (org-block      :inherit fixed-pitch)
-  ;;          ;; (org-checkbox   :inherit fixed-pitch)
-  ;;          ;; (org-table      :inherit fixed-pitch)
-  ;;          (org-ellipsis   :inherit variable-pitch :underline nil)
-  ;;          (org-block-begin-line    :inherit fixed-pitch :box nil :background "#FAFAFA")
-  ;;          (org-block-end-line      :inherit fixed-pitch :box nil :background "#FAFAFA")
-  ;;          (org-latex-and-related   :inherit org-formula)
-  ;;          (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
-  ;;          ;; ;; company
-  ;;          ;; (company-echo :inherit fixed-pitch)
-  ;;          ;; (company-echo-common :inherit fixed-pitch)
-  ;;          ;; (company-preview :inherit fixed-pitch)
-  ;;          ;; (company-preview-common :inherit fixed-pitch)
-  ;;          ;; ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
-  ;;          ;; (company-scrollbar-bg :inherit fixed-pitch)
-  ;;          ;; (company-scrollbar-fg :inherit fixed-pitch)
-  ;;          ;; (company-template-field :inherit fixed-pitch)
-  ;;          ;; (company-tooltip :inherit fixed-pitch)
-  ;;          ;; (company-tooltip-annotation :inherit fixed-pitch)
-  ;;          ;; ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
-  ;;          ;; ;; (company-tooltip-common)               ; inherit company-tooltip
-  ;;          ;; ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
-  ;;          ;; ;; (company-tooltip-mouse)                ; inherit highlight
-  ;;          ;; ;; (company-tooltip-search)               ; inherit highlight
-  ;;          ;; ;; (company-tooltip-search-selection)     ; inherit highlight
-  ;;          ;; (company-tooltip-selection :inherit fixed-pitch)
-  ;;          ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
-  ;;          ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
-  ;;          ;; (company-tooltip-common)               ; inherit company-tooltip
-  ;;          ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
-  ;;          ;; (company-tooltip-mouse)                ; inherit highlight
-  ;;          ;; (company-tooltip-search)               ; inherit highlight
-  ;;          ;; (company-tooltip-search-selection)     ; inherit highlight
-  ;;          )
-  ;;         ))
-
-  ;; nth theme in theming-mods. there is only one of theme to be mod'ed, so 0.
-  ;; (setq mytheme0-faces (cdr (nth 0 theming-modifications)))
-
+  (add-to-list 'my/material-light-faces 'material-light)
+  (setq theming-modifications (list my/material-light-faces))
 
   ;; fontset
   (setq face-font-rescale-alist
@@ -754,11 +716,42 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
   ;; --------------------
+  ;; defuns
+  ;; --------------------
+
+  ;; https://www.reddit.com/r/emacs/comments/5a4n39/ligatures_question_i_cant_find_more_informative/
+  (defun private/prettify-list (l &optional merge)
+    "Takes two lists and interleaves the (optional) second between each element of the first.  Used to
+  create multi-character sequences for use with prettify-symbols mode.  If not supplied, MERGE defaults
+  to '(Br . Bl)"
+    (let ((merge (or merge '(Br . Bl)))
+          (head (car l))
+          (tail (cdr l)))
+      (cond
+       ((not (consp l))    '())
+       ((not (consp tail))  (list head))
+       (t (cons head
+                (cons merge
+                      (private/prettify-list tail merge)))))))
+
+  (defun private/prettify-string (s &optional merge)
+    "Takes a string and an optional list, and returns a list of the string's characters with MERGE
+  interleaved between each character, for use with prettify-symbols mode.  If no MERGE is supplied,
+  uses the private/prettify-list default."
+    (private/prettify-list (append s nil) merge))
+
+  ;; --------------------
   ;; general settings
   ;; --------------------
 
   ;; mixed-pitch -> var
   (add-hook 'text-mode-hook 'variable-pitch-mode)
+
+  ;; prettify for all text-modes
+  (add-hook 'text-mode-hook
+            (lambda ()
+              (push '(" x " . ?×) prettify-symbols-alist)
+              ))
 
   ;; powerline & backslash issue on macOS JIS keyboard
   (if (eq system-type 'darwin)
@@ -845,9 +838,155 @@ before packages are loaded."
    (setq org-download-method 'directory
          org-download-image-dir "~/Dropbox/org/doc/media")
 
-   (add-hook 'text-mode-hook
+   ;; prettify-symbols
+   ;; memo: “”„ǁǀ╱╲╳❬FILE❭❮FILE❯❰FILE❱⟨FILE⟩⟪FILE⟫x┄x┅x┆x┇x┈x┉x┊x┋x╏x⎕x√x∫x╍x⌶x⌈x⌉x⌊x⌋x⋀x⋁x⋂x⋃xxxx
+
+   (add-hook 'org-mode-hook
              (lambda ()
-               (push '(" x " . ?×) prettify-symbols-alist)))
+               ;; section (char count except #+ and :)
+               ;; structural blocks. (13 char.) https://orgmode.org/manual/Structure-Templates.html
+               (push (cons "#+BEGIN_CENTER"  (private/prettify-string "⌈  Center:  ⌉")) prettify-symbols-alist)
+               (push (cons "#+END_CENTER"    (private/prettify-string "⌊  :Center  ⌋")) prettify-symbols-alist)
+               (push (cons "#+BEGIN_COMMENT" (private/prettify-string "╳╳ comment ╳╳")) prettify-symbols-alist)
+               (push (cons "#+END_COMMENT"   (private/prettify-string "╳╳ comment ╳╳")) prettify-symbols-alist)
+               (push (cons "#+BEGIN_EXAMPLE" (private/prettify-string "╍╍╍  Eg.  ╍╍╍")) prettify-symbols-alist)
+               (push (cons "#+END_EXAMPLE"   (private/prettify-string "╍╍╍╍╍╍╍╍╍╍╍╍╍")) prettify-symbols-alist)
+               (push (cons "#+BEGIN_EXPORT"  (private/prettify-string "⟪╍╍EXPORT:╍╍ǁ")) prettify-symbols-alist)
+               (push (cons "#+END_EXPORT"    (private/prettify-string "ǁ╍╍:EXPORT╍╍⟫")) prettify-symbols-alist)
+               (push (cons "#+BEGIN_QUOTE"   (private/prettify-string "“ ╍╍╍╍╍╍╍╍╍╍ ")) prettify-symbols-alist)
+               (push (cons "#+END_QUOTE"     (private/prettify-string " ╍╍╍╍╍╍ Qt. ”")) prettify-symbols-alist)
+               (push (cons "#+BEGIN_SRC"     (private/prettify-string "╱   CODE:   ╱")) prettify-symbols-alist)
+               (push (cons "#+END_SRC"       (private/prettify-string "╱   :CODE   ╱")) prettify-symbols-alist)
+               (push (cons "#+BEGIN_VERSE"   (private/prettify-string "“— v e r s e")) prettify-symbols-alist)
+               (push (cons "#+END_VERSE"     (private/prettify-string "ə s ɹ ə ʌ —”")) prettify-symbols-alist)
+               ;; name & caption (10 char.)
+               (push (cons "#+NAME:"      (private/prettify-string "❖   NAME   ╏")) prettify-symbols-alist)
+               (push (cons "#+CAPTION:"   (private/prettify-string "❖ Caption  ╏")) prettify-symbols-alist)
+               ;; include
+               (push (cons "#+INCLUDE:"   (private/prettify-string "❖ #INCLUDE ╏")) prettify-symbols-alist)
+               ;; fragment (10 char.)
+               (push (cons "#+ORGTBL:"    (private/prettify-string "❖  OrgTbl. ╏")) prettify-symbols-alist)
+               (push (cons "#+TOC:"       (private/prettify-string "❖  T.o.C.  ╏")) prettify-symbols-alist)
+               (push (cons "#+ASCII:"     (private/prettify-string "❖  ASCII   ╏")) prettify-symbols-alist)
+               (push (cons "#+ODT:"       (private/prettify-string "❖   ODT    ╏")) prettify-symbols-alist)
+               (push (cons "#+HTML:"      (private/prettify-string "❖   html   ╏")) prettify-symbols-alist)
+               (push (cons "#+LaTeX:"     (private/prettify-string "❖  LaTeX   ╏")) prettify-symbols-alist)
+               (push (cons "#+BEAMER:"    (private/prettify-string "❖  Beamer  ╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO:"   (private/prettify-string "❖ Texinfo  ╏")) prettify-symbols-alist)
+               ;; attrribute (13 char.)
+               (push (cons "#+ATTR_ASCII:"   (private/prettify-string "❖Attr. ASCII ╏")) prettify-symbols-alist)
+               (push (cons "#+ATTR_ODT:"     (private/prettify-string "❖ Attr. ODT  ╏")) prettify-symbols-alist)
+               (push (cons "#+ATTR_HTML:"    (private/prettify-string "❖ Attr. html ╏")) prettify-symbols-alist)
+               (push (cons "#+ATTR_LaTeX:"   (private/prettify-string "❖Attr. LaTeX ╏")) prettify-symbols-alist)
+               (push (cons "#+ATTR_BEAMER:"  (private/prettify-string "❖Attr. Beamer╏")) prettify-symbols-alist)
+               (push (cons "#+ATTR_TEXINFO:" (private/prettify-string "❖ Attr. Texi ╏")) prettify-symbols-alist)
+               ;; MACRO (10 char.)
+               (push (cons "#+MACRO:"      (private/prettify-string "❖  MACRO   ╏")) prettify-symbols-alist)
+               ;; in-buffer settings. (10 char.) https://orgmode.org/manual/In_002dbuffer-settings.html
+               (push (cons "#+ARCHIVE:"    (private/prettify-string "❖ Archive  ╏")) prettify-symbols-alist)
+               (push (cons "#+CREATOR:"    (private/prettify-string "❖ Creator  ╏")) prettify-symbols-alist)
+               (push (cons "#+CATEGORY:"   (private/prettify-string "❖ Category ╏")) prettify-symbols-alist)
+               (push (cons "#+COLUMNS:"    (private/prettify-string "❖   COLs.  ╏")) prettify-symbols-alist)
+               (push (cons "#+CONSTANTS:"  (private/prettify-string "❖ Consts.  ╏")) prettify-symbols-alist)
+               (push (cons "#+FILETAGS:"   (private/prettify-string "❖ FILETAGS ╏")) prettify-symbols-alist)
+               (push (cons "#+LINK:"       (private/prettify-string "❖   LINK   ╏")) prettify-symbols-alist)
+               (push (cons "#+PRIORITIES:" (private/prettify-string "❖Priorities╏")) prettify-symbols-alist)
+               (push (cons "#+PROPERTY:"   (private/prettify-string "❖ PROPERTY ╏")) prettify-symbols-alist)
+               (push (cons "#+SETUPFILE:"  (private/prettify-string "❖SETUP FILE╏")) prettify-symbols-alist)
+               (push (cons "#+STARTUP:"    (private/prettify-string "❖ START-UP ╏")) prettify-symbols-alist)
+               (push (cons "#+TAGS:"       (private/prettify-string "❖   TAGS   ╏")) prettify-symbols-alist)
+               (push (cons "#+TBLFM:"      (private/prettify-string "❖  TblƑm.  ╏")) prettify-symbols-alist)
+               (push (cons "#+TODO:"       (private/prettify-string "❖   TODO   ╏")) prettify-symbols-alist)
+               (push (cons "#+SEQ_TODO:"   (private/prettify-string "❖ SEQ TODO ╏")) prettify-symbols-alist)
+               (push (cons "#+TITLE:"      (private/prettify-string "❖  TITLE   ╏")) prettify-symbols-alist)
+               (push (cons "#+AUTHOR:"     (private/prettify-string "❖  AUTHOR  ╏")) prettify-symbols-alist)
+               (push (cons "#+EMAIL:"      (private/prettify-string "❖  E-MAIL  ╏")) prettify-symbols-alist)
+               (push (cons "#+LANGUAGE:"   (private/prettify-string "❖   Lang.  ╏")) prettify-symbols-alist)
+               (push (cons "#+DATE:"       (private/prettify-string "❖   DATE   ╏")) prettify-symbols-alist)
+               (push (cons "#+OPTIONS:"    (private/prettify-string "❖   OPTs.  ╏")) prettify-symbols-alist)
+               (push (cons "#+BIND:"       (private/prettify-string "❖   BIND   ╏")) prettify-symbols-alist)
+               ;; long-name settings (15 chars.)
+               (push (cons "#+SELECT_TAGS:"         (private/prettify-string "❖ Select Tags   ╏"))  prettify-symbols-alist)
+               (push (cons "#+EXCLUDE_TAGS:"        (private/prettify-string "❖ Exclude Tags  ╏"))  prettify-symbols-alist)
+               (push (cons "#+EXPORT_FILENAME:"     (private/prettify-string "❖Export Filename╏"))  prettify-symbols-alist)
+               ;; some common export settings (15 char.) ODT_STYLES_FILE
+               (push (cons "#+DESCRIPTION:"         (private/prettify-string "❖  Description  ╏")) prettify-symbols-alist)
+               (push (cons "#+KEYWORDS:"            (private/prettify-string "❖   Keywords    ╏")) prettify-symbols-alist)
+               (push (cons "#+SUBTITLE:"            (private/prettify-string "❖   Subtitle    ╏")) prettify-symbols-alist)
+               ;; html(building) (15 char.) https://orgmode.org/manual/HTML-specific-export-settings.html
+               (push (cons "#+HTML_HEAD:"           (private/prettify-string "❖   html Head   ╏")) prettify-symbols-alist)
+               (push (cons "#+HTML_HEAD_EXTRA:"     (private/prettify-string "❖ html Head EX. ╏")) prettify-symbols-alist)
+               (push (cons "#+HTML_LINK_UP:"        (private/prettify-string "❖ html Link UP  ╏")) prettify-symbols-alist)
+               (push (cons "#+HTML_LINK_HOME:"      (private/prettify-string "❖html Link HOME ╏")) prettify-symbols-alist)
+               (push (cons "#+HTML_DOCTYPE:"        (private/prettify-string "❖ html Doc Type ╏")) prettify-symbols-alist)
+               ;; odt (15 char.)
+               (push (cons "#+ODT_STYLES_FILE:"     (private/prettify-string "❖ ODT StyleFile ╏")) prettify-symbols-alist)
+               ;; latex (15 char.) https://orgmode.org/manual/LaTeX-specific-export-settings.html
+               (push (cons "#+LaTeX_HEADER:"        (private/prettify-string "❖ LaTeX Header  ╏")) prettify-symbols-alist)
+               (push (cons "#+LaTeX_HEADER_EXTRA:"  (private/prettify-string "❖ LaTeX Hdr. EX.╏")) prettify-symbols-alist)
+               (push (cons "#+LaTeX_CLASS:"         (private/prettify-string "❖  LaTeX Class  ╏")) prettify-symbols-alist)
+               (push (cons "#+LaTeX_CLASS_OPTIONS:" (private/prettify-string "❖LaTeX Cls. Opts╏")) prettify-symbols-alist)
+               (push (cons "#+LaTeX_COMPILER:"      (private/prettify-string "❖LaTeX Compiler ╏")) prettify-symbols-alist)
+               ;; Beamer (15 char.) https://orgmode.org/manual/Beamer-specific-export-settings.html
+               (push (cons "#+BEAMER_HEADER:"        (private/prettify-string "❖ Beamer Header ╏")) prettify-symbols-alist)
+               (push (cons "#+BEAMER_THEME:"         (private/prettify-string "❖ Beamer Theme  ╏")) prettify-symbols-alist)
+               (push (cons "#+BEAMER_FONT_THEME:"    (private/prettify-string "❖ Bmr Font Thm. ╏")) prettify-symbols-alist)
+               (push (cons "#+BEAMER_INNER_THEME:"   (private/prettify-string "❖ Bmr Inner Thm.╏")) prettify-symbols-alist)
+               (push (cons "#+BEAMER_OUTER_THEME:"   (private/prettify-string "❖ Bmr Outer Thm.╏")) prettify-symbols-alist)
+               ;; texinfo, which I don't really use (15 char.) https://orgmode.org/manual/Texinfo-specific-export-settings.html
+               (push (cons "#+TEXINFO_FILENAME:"     (private/prettify-string "❖ Texi filename ╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO_HEADER:"       (private/prettify-string "❖  Texi Header  ╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO_POST_HEADER:"  (private/prettify-string "❖ Texi Post Hdr.╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO_CLASS:"        (private/prettify-string "❖  Texi Class   ╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO_DIR_CATEGORY:" (private/prettify-string "❖ Texi dir Cat. ╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO_DIR_TITLE:"    (private/prettify-string "❖Texi dir Title ╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO_DIR_DESC:"     (private/prettify-string "❖ Texi dir Desc.╏")) prettify-symbols-alist)
+               ;; org-babel. https://orgmode.org/manual/Specific-header-arguments.html
+               (push (cons ":var"         (private/prettify-string "⟨VAR⟩"))         prettify-symbols-alist)
+               (push (cons ":results"     (private/prettify-string "⟨RESULTS⟩"))     prettify-symbols-alist)
+               (push (cons ":file"        (private/prettify-string "⟨FILE⟩"))        prettify-symbols-alist)
+               (push (cons ":file-desc"   (private/prettify-string "⟨File Desc⟩"))   prettify-symbols-alist)
+               (push (cons ":file-ext"    (private/prettify-string "⟨File Ext⟩"))    prettify-symbols-alist)
+               (push (cons ":output-dir"  (private/prettify-string "⟨Output DIR⟩"))  prettify-symbols-alist)
+               (push (cons ":dir"         (private/prettify-string "⟨DIR⟩"))         prettify-symbols-alist)
+               (push (cons ":exports"     (private/prettify-string "⟨EXPORTS⟩"))     prettify-symbols-alist)
+               (push (cons ":tangle"      (private/prettify-string "⟨TANGLE⟩"))      prettify-symbols-alist)
+               (push (cons ":mkdirp"      (private/prettify-string "⟨MKDIR?⟩"))      prettify-symbols-alist)
+               (push (cons ":comments"    (private/prettify-string "⟨COMMENTS⟩"))    prettify-symbols-alist)
+               (push (cons ":padline"     (private/prettify-string "⟨padLine⟩"))     prettify-symbols-alist)
+               (push (cons ":no-expand"   (private/prettify-string "⟨NO Expand⟩"))   prettify-symbols-alist)
+               (push (cons ":session"     (private/prettify-string "⟨Session⟩"))     prettify-symbols-alist)
+               (push (cons ":noweb"       (private/prettify-string "⟨NOWEB⟩"))       prettify-symbols-alist)
+               (push (cons ":noweb-ref"   (private/prettify-string "⟨NOWEB Ref⟩"))   prettify-symbols-alist)
+               (push (cons ":noweb-sep"   (private/prettify-string "⟨NOWEB Sep⟩"))   prettify-symbols-alist)
+               (push (cons ":cache"       (private/prettify-string "⟨CACHE⟩"))       prettify-symbols-alist)
+               (push (cons ":sep"         (private/prettify-string "⟨SEP⟩"))         prettify-symbols-alist)
+               (push (cons ":hlines"      (private/prettify-string "⟨hLines⟩"))      prettify-symbols-alist)
+               (push (cons ":colnames"    (private/prettify-string "⟨COLnames⟩"))    prettify-symbols-alist)
+               (push (cons ":rownames"    (private/prettify-string "⟨ROWnames⟩"))    prettify-symbols-alist)
+               (push (cons ":shebang"     (private/prettify-string "⟨ #! ⟩"))        prettify-symbols-alist)
+               (push (cons ":tangle-mode" (private/prettify-string "⟨rwx rwx rwx⟩")) prettify-symbols-alist)
+               (push (cons ":wrap"        (private/prettify-string "⟨Wrap⟩"))        prettify-symbols-alist)
+               (push (cons ":eval"        (private/prettify-string "⟨EVAL⟩"))        prettify-symbols-alist)
+               (push (cons ":post"        (private/prettify-string "⟨Post⟩"))        prettify-symbols-alist)
+               (push (cons ":prologue"    (private/prettify-string "⟨Prologue⟩"))    prettify-symbols-alist)
+               (push (cons ":epilogue"    (private/prettify-string "⟨Epilogue⟩"))    prettify-symbols-alist)
+
+               (push (cons ":async"       (private/prettify-string "⟨async.⟩"))      prettify-symbols-alist) ;; ob-async
+               (push (cons ":python"      (private/prettify-string "⟨py Cmd.⟩"))     prettify-symbols-alist) ;; ob-python
+               ;; C/C++/D
+               (push (cons ":cmdline"     (private/prettify-string "⟨>_ args⟩"))     prettify-symbols-alist)
+               (push (cons ":flags"       (private/prettify-string "⟨FLAGS⟩"))       prettify-symbols-alist)
+               (push (cons ":main"        (private/prettify-string "⟨MAIN⟩"))        prettify-symbols-alist)
+               ;; C/C++
+               (push (cons ":includes"    (private/prettify-string "⟨#include⟩"))    prettify-symbols-alist)
+               (push (cons ":defines"     (private/prettify-string "⟨#DEFINEs⟩"))    prettify-symbols-alist)
+               (push (cons ":libs"        (private/prettify-string "⟨libs⟩"))        prettify-symbols-alist)
+
+               (push (cons ":namespaces"  (private/prettify-string "⟨NameSpcs.⟩"))   prettify-symbols-alist) ;; ob-cpp
+               (push (cons ":import"      (private/prettify-string "⟨import⟩"))      prettify-symbols-alist) ;; ob-D
+               ))
+
 
    ;; (add-hook 'org-mode-hook 'variable-pitch-mode)
    )
@@ -862,16 +1001,16 @@ before packages are loaded."
   (require 'avy-migemo-e.g.ivy)
   (setq pangu-spacing-real-insert-separtor nil)
   (global-pangu-spacing-mode nil) ;; disable autospace ascii & unicode
-  ;; also exclude´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗µ
+  ;; also exclude´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗µ❖
   ;; source: https://github.com/coldnew/pangu-spacing/blob/master/pangu-spacing.el
   ;; (setq latin-and-separator
-  ;;       "、。，！？；：「」（）´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗")
+  ;;       "、。，！？；：「」（）´‘’‚“”„«»‹›†‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗")
   (setq pangu-spacing-chinese-before-english-regexp-exclude
-        (rx (group-n 1 (or (in "、。，！？；：「」（）´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗")))
+        (rx (group-n 1 (or (in "、。，！？；：「」（）´‘’‚“”„«»‹›†‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗❖")))
             (group-n 2 (in "a-zA-Z0-9"))))
   (setq pangu-spacing-chinese-after-english-regexp-exclude
         (rx (group-n 1 (in "a-zA-Z0-9"))
-            (group-n 2 (or (in "、。，！？；：「」（）´‘’‚“”„«»‹›†‡‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗")))))
+            (group-n 2 (or (in "、。，！？；：「」（）´‘’‚“”„«»‹›†‡　・．〔〕［］｛｝〈〉《》『』【】＜＞×＝≠∞°′″℃｟｠〘〙〖〗❖")))))
 
   ;; skk settings -------
   ;; these need to be written here; otherwise written in ~/.skk
@@ -900,6 +1039,7 @@ before packages are loaded."
   ;; --------------------
   ;; personal keybindings
   ;; --------------------
+  (global-prettify-symbols-mode 1)
   (spacemacs/declare-prefix "o" "my-cmd.")
   (spacemacs/set-leader-keys "oj" 'skk-mode)
   (spacemacs/set-leader-keys "oT"

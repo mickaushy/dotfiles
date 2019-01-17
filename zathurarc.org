@@ -1,0 +1,134 @@
+# -*- mode: org -*-
+#+TITLE:Commentary of .zathurarc
+#+AUTHOR:mickaushy
+#+STARTUP: content indent align noinlineimages
+#+OPTIONS: num:nil toc:2 tex:nil ^:{} d:nil
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="orgmode11.css">
+* zathurarc
+:PROPERTIES:
+:header-args:text: :tangle ~/.config/zathura/zathurarc
+:END:
+
+** about
+このファイルによってpdfビューア =zathurarc= を管理・保守する。
+次のコード片を実行して目的のディレクトリに設定ファイルを生成する:
+=zathura= インストール直後でディレクトリが無いときは先に
+[[*initialisation][* initialisation]] のコードを実行すること。
+
+#+NAME: tangle this file
+#+BEGIN_SRC emacs-lisp :tangle no :results silent
+  (org-babel-tangle)
+#+END_SRC
+
+このファイルの出力先を変更するには、このファイル上部の =header-args= 内にある
+:tangle のディレクトリを変更する。
+
+設定項目は
+[[https://www.systutorials.com/docs/linux/man/5-zathurarc/][オンラインマニュアル]] か、 もしくは
+[[elisp:(man "zathurarc")][zathurarc の man ページ]] から確認できる。
+
+=zathura= のデフォルト keybinding は
+[[elisp:(man "zathura")][zathura の man ページ]] から確認できる。
+
+*** initialisation
+=zathura= の設定ディレクトリをつくる。
+
+#+NAME: init
+#+BEGIN_SRC sh :results drawer :tangle no
+  mkdir -pv ${HOME}/.config/zathura/
+#+END_SRC
+
+** font
+虞らく使用環境(OS)ごとに再考することになる(dpiが異なるため)。
+
+#+BEGIN_SRC text
+  set font "sarasa mono T J normal 12"
+#+END_SRC
+
+** color
+- default-bg ... ファイルを開く前の、もしくは開いた後の裏側の色。
+
+#+BEGIN_SRC text
+   set default-bg "#f3ecd8" # ivory
+#+END_SRC
+
+- recolor ... 暗色と明色の上限を定める。 \\
+  keephue が =true= なら明度のみが用いられる \\
+  keephue を =false= にするとモノクロ/セピア調になる。
+
+#+BEGIN_SRC text
+  set recolor "true"
+  set recolor-darkcolor "#2c3e50"  # midnight blue
+  set recolor-lightcolor "#f3ecd8" # ivory
+  set recolor-keephue "true"
+#+END_SRC
+
+** geometry
+window の高さは Mac Book Air 13inch でほぼ一杯になるように定めた。
+またスライドに多く見られる 3:4 の横幅に定めた。
+
+#+BEGIN_SRC text
+  set window-height 840
+  set window-width 1120
+  set adjust-open "best-fit" # default: best-fit / width
+#+END_SRC
+
+** misc.
+OSのクリップボードを使う。
+
+#+BEGIN_SRC text
+  set selection-clipboard "clipboard"
+#+END_SRC
+
+タイトルバーに表示されるファイルパスの =home= を =~= にする。
+
+#+BEGIN_SRC text
+  set window-title-home-tilde "true"
+#+END_SRC
+
+* (flatui color)                                                   :noexport:
+徹底して色を設定する気になったとき用のメモ。
+
+#+BEGIN_SRC text :tangle no
+  # #1abc9c
+  #     Turquoise
+  # #16a085
+  #     Green sea
+  # #2ecc71
+  #     Emerald
+  # #27ae60
+  #     Nephritis
+  # #3498db
+  #     Peter river
+  # #2980b9
+  #     Belize hole
+  # #9b59b6
+  #     Amethyst
+  # #8e44ad
+  #     Wisteria
+  # #34495e
+  #     Wet asphalt
+  # #2c3e50
+  #     Midnight blue
+  # #f1c40f
+  #     Sun flower
+  # #f39c12
+  #     Orange
+  # #e67e22
+  #     Carrot
+  # #d35400
+  #     Pumpkin
+  # #e74c3c
+  #     Alizarin
+  # #c0392b
+  #     Pomegranate
+  # #ecf0f1
+  #     Clouds
+  # #bdc3c7
+  #     Silver
+  # #95a5a6
+  #     Concrete
+  # #7f8c8d
+  #     Asbestos
+
+#+END_SRC

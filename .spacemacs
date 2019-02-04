@@ -54,18 +54,22 @@ This function should only modify configuration layer settings."
      c-c++
      colors
      command-log
-     coq
+     ;; coq
      csv
      emacs-lisp
      git
      github
-     (haskell :variables haskell-enable-hindent-style "intero")
+     graphviz
+     ;; (haskell :variables haskell-enable-hindent-style "intero")
      (japanese :variables
                migemo-dictionary  "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8")
      (latex :variables latex-build-command "LaTeX")
      markdown
-     neotree
+     ;; neotree
      org
+     (plantuml :variables
+               plantuml-jar-path     "~/plantuml.jar"
+               org-plantuml-jar-path "~/plantuml.jar")
      python
      (rust :variables rust-format-on-save t)
      (shell :variables
@@ -80,7 +84,7 @@ This function should only modify configuration layer settings."
      table-manipulation
      themes-megapack
      theming
-     twitter
+     ;; twitter
      ranger
      ;; version-control
      )
@@ -225,10 +229,10 @@ It should only modify the values of Spacemacs settings."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          material-light
-                         alect-light-alt
                          spacemacs-light
-                         ;; flatui
-                         ;; apropospriate-light
+                         alect-light-alt
+                         flatui
+                         apropospriate-light
                          ;; dichromacy
                          ;; solarized-light
                          ;; solarized-dark
@@ -239,7 +243,7 @@ It should only modify the values of Spacemacs settings."
                          ;; tango
                          ;; occidental
                          ;; colorsarenice-light
-                         ;; adwaita
+                         adwaita
                          ;; default
                          ;; monokai
                          ;; zenburn
@@ -519,6 +523,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; --------------------
   ;; font
+  ;;   Order is important -- otherwise font rescaling doesn't work properly.
+  ;;   1. create fontset (from ascii / from fontset spec / etc.)
+  ;;   2. set-face-attribute to bind fontset to specific faces (with :height)
+  ;;   3. set-fontset-font to set multiple fonts
   ;; --------------------
 
   ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
@@ -526,20 +534,86 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; https://www.shimmy1996.com/en/posts/2018-06-24-fun-with-fonts-in-emacs/
 
-  ;; (defun my/create-fontset (fontset1 latinfont cjkfont)
-  ;;   (set-fontset-font fontset1 'latin
-  ;;                     (font-spec :family latinfont) nil 'append)
-  ;;   (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
-  ;;     (set-fontset-font fontset1 charset
-  ;;                       (font-spec :family cjkfont) nil 'prepend))
-  ;;   )
+  ;; font spec name from: (font-family-list)
 
-  ;; font-size
+  ;; default
+  ;; mathematical fallback: https://en.wikipedia.org/wiki/Mathematical_operators_and_symbols_in_Unicode
+  (set-fontset-font "fontset-default" '(#x2100 . #x214f)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+  (set-fontset-font "fontset-default" '(#x2200 . #x22ff)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+  (set-fontset-font "fontset-default" '(#x2900 . #x2aff)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+  (set-fontset-font "fontset-default" '(#x1d400 . #x1d7ff)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+  ;; dejavu fallback
+  (set-fontset-font "fontset-default" 'unicode
+                    (font-spec :family "DejaVu Sans") nil 'append)
+
+  ;; 2 variable-pitches, so create another one
+  (defface variable-pitch-alt '((t :weight normal))
+    "user defined face: used instead of variable-pitch(sans vs serif etc.)."
+    :group 'basic-faces)
+
+  ;; serif_proportional --------------------------------------------------
+  ;; latin:vollkorn:weight=medium,
+  (create-fontset-from-fontset-spec
+   "-*-noto serif cjk j-medium-r-normal-*-*-*-*-*-p-*-fontset-serif_proportional,
+   latin:merriweather:width=regular,
+   cyrillic:vollkorn:weight=medium")
+
+  (set-face-attribute 'variable-pitch-alt nil :height 140
+                      :font "fontset-serif_proportional" :fontset "fontset-serif_proportional")
+
+  (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
+    (set-fontset-font "fontset-serif_proportional" charset
+                      (font-spec :family "Noto Serif CJK JP") nil 'append))
+  (set-fontset-font "fontset-serif_proportional" 'unicode
+                    (font-spec :family "DejaVu Serif") nil 'append)
+  (set-fontset-font "fontset-serif_proportional" '(#x2100 . #x214f)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+  (set-fontset-font "fontset-serif_proportional" '(#x2200 . #x22ff)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+  (set-fontset-font "fontset-serif_proportional" '(#x2900 . #x2aff)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+  (set-fontset-font "fontset-serif_proportional" '(#x1d400 . #x1d7ff)
+                    (font-spec :family "DejaVu Math TeX Gyre") nil 'prepend)
+
+  ;; sans_proportional ----------------------------------------------------
+  (create-fontset-from-fontset-spec
+   "-*-sarasa ui j-regular-r-normal-*-*-*-*-*-p-*-fontset-sans_proportional,
+   latin:rubik:weight=medium,
+   cyrillic:rubik:weight=medium")
+
+  (set-face-attribute 'variable-pitch nil :height 140
+                      :font "fontset-sans_proportional" :fontset "fontset-sans_proportional")
+
+  (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
+    (set-fontset-font "fontset-sans_proportional" charset
+                      (font-spec :family "Sarasa UI J") nil 'append))
+  (set-fontset-font "fontset-sans_proportional" 'unicode
+                    (font-spec :family "DejaVu Sans") nil 'append)
+
+  ;; monospace ------------------------------------------------------------
+  (create-fontset-from-fontset-spec
+   "-*-sarasa mono t j-regular-r-normal-*-*-*-*-*-m-*-fontset-monospace")
+
+  (set-face-attribute 'fixed-pitch nil :height 140
+                      :font "fontset-monospace" :fontset "fontset-monospace")
+
+  (set-fontset-font "fontset-monospace" 'unicode
+                    (font-spec :family "Sarasa Mono T J") nil 'prepend)
+  (set-fontset-font "fontset-monospace" 'unicode
+                    (font-spec :family "DejaVu Sans Mono") nil 'append)
+  (set-fontset-font "fontset-monospace" 'unicode
+                    (font-spec :family "DejaVu Sans") nil 'append)
+
+  ;; font-size ------------------------------------------------------------
   (setq face-font-rescale-alist
         '(
           (".*Noto Serif CJK.*" . 1.0)
           (".*Rubik.*" . 1.0)
-          (".*Vollkorn.*" . 1.06)
+          (".*Vollkorn.*" . 1.1)
           ;; (".*mononoki.*" . 0.92)
           (".*merriweeather.*" . 0.90)
           (".*Hiragino Sans.*" . 1.0)
@@ -548,74 +622,16 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
           ("-cdac$" . 1.3)
           ))
 
-  ;; font spec name from: (font-family-list)
-  ;; mathematical fallback: https://en.wikipedia.org/wiki/Mathematical_operators_and_symbols_in_Unicode
-  (set-fontset-font "fontset-default" '(#x2100 . #x214f)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-  (set-fontset-font "fontset-default" '(#x2200 . #x22ff)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-  (set-fontset-font "fontset-default" '(#x2900 . #x2aff)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-  (set-fontset-font "fontset-default" '(#x1d400 . #x1d7ff)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-
-  ;; serif_proportional
-  ;; latin:merriweather:width=regular,
-  (create-fontset-from-fontset-spec
-   "-*-noto serif cjk j-medium-r-normal-*-*-*-*-*-p-*-fontset-serif_proportional,
-   latin:vollkorn:weight=medium,
-   cyrillic:vollkorn:weight=medium")
-  (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
-    (set-fontset-font "fontset-serif_proportional" charset
-                      (font-spec :name "Noto Serif CJK JP") nil 'append))
-  (set-fontset-font "fontset-serif_proportional" 'unicode
-                    (font-spec :name "DejaVu Serif") nil 'append)
-  (set-fontset-font "fontset-serif_proportional" '(#x2100 . #x214f)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-  (set-fontset-font "fontset-serif_proportional" '(#x2200 . #x22ff)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-  (set-fontset-font "fontset-serif_proportional" '(#x2900 . #x2aff)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-  (set-fontset-font "fontset-serif_proportional" '(#x1d400 . #x1d7ff)
-                    (font-spec :name "DejaVu Math TeX Gyre") nil 'prepend)
-
-  ;; sans_proportional
-  (create-fontset-from-fontset-spec
-   "-*-sarasa ui j-regular-r-normal-*-*-*-*-*-p-*-fontset-sans_proportional,
-   latin:rubik:weight=medium,
-   cyrillic:rubik:weight=medium")
-  (dolist (charset '(kana han cjk-misc hangul kanbun bopomofo))
-    (set-fontset-font "fontset-sans_proportional" charset
-                      (font-spec :name "Sarasa UI J") nil 'append))
-  (set-fontset-font "fontset-sans_proportional" 'unicode
-                    (font-spec :name "DejaVu Sans") nil 'append)
-
-  ;; monospace
-  (create-fontset-from-fontset-spec
-   "-*-sarasa mono t j-regular-r-normal-*-*-*-*-*-m-*-fontset-monospace")
-  (set-fontset-font "fontset-monospace" 'unicode
-                    (font-spec :name "Sarasa Mono T J") nil 'prepend)
-  (set-fontset-font "fontset-monospace" 'unicode
-                    (font-spec :name "DejaVu Sans Mono") nil 'append)
-
-  (defface variable-pitch-alt '((t :height 140))
-    "user defined face: used instead of variable-pitch(sans vs serif etc.)."
-    :group 'basic-faces)
-
-  ;; fontset only be set from here, not in theming-modifications.
-  ;; swap serif/sans here for default proportional pitch font.
-  (set-face-attribute 'variable-pitch nil :height 140
-                      :font "fontset-sans_proportional" :fontset "fontset-sans_proportional")
-  (set-face-attribute 'variable-pitch-alt nil :height 140
-                      :font "fontset-serif_proportional" :fontset "fontset-serif_proportional")
-  (set-face-attribute 'fixed-pitch nil :height 140
-                      :font "fontset-monospace" :fontset "fontset-monospace")
-
+  ;; --------------------
   ;; theming
+  ;; --------------------
+
+  (setq-default my/common-faces       '())
+  (setq-default my/common-light-faces '())
+  (setq-default my/common-dark-faces  '())
+
   (setq-default my/material-light-faces
                 '(
-                  ;; (variable-pitch :fontset "fontset-serif_proportional" :font "fontset-serif_proportional")
-                  ;; (fixed-pitch    :fontset "fontset-monospace" :font "fontset-monospace")
                   (linum          :inherit fixed-pitch :background "#FAFAFA")
                   ;; org-mode
                   (org-default    :inherit variable-pitch)
@@ -627,6 +643,33 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                   (org-document-title      :scale 1.35 :weight bold)
                   (org-block-begin-line    :inherit fixed-pitch :box nil :background "#FAFAFA")
                   (org-block-end-line      :inherit fixed-pitch :box nil :background "#FAFAFA")
+                  (org-latex-and-related   :inherit (variable-pitch-alt org-formula))
+                  (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
+                  ;; company-mode: no need to set (these just inherit)
+                  ;; (company-preview-search)               ; inherit company-tooltip-common-sellection
+                  ;; (company-tooltip-annotation-selection) ; inherit company-tooltip-selection
+                  ;; (company-tooltip-common)               ; inherit company-tooltip
+                  ;; (company-tooltip-common-selection)     ; inherit company-tooltip-selection
+                  ;; (company-tooltip-mouse)                ; inherit highlight
+                  ;; (company-tooltip-search)               ; inherit highlight
+                  ;; (company-tooltip-search-selection)     ; inherit highlight
+                  ))
+
+  (setq-default my/spacemacs-light-faces
+                '(
+                  ;; (variable-pitch :fontset "fontset-serif_proportional" :font "fontset-serif_proportional")
+                  ;; (fixed-pitch    :fontset "fontset-monospace" :font "fontset-monospace")
+                  (linum          :inherit fixed-pitch :background "#fbf8ef")
+                  ;; org-mode
+                  (org-default    :inherit variable-pitch)
+                  (org-indent     :inherit (fixed-pitch org-hide)) ;; important
+                  ;; (org-meta-line  :inherit fixed-pitch :foreground "#4e342e")
+                  (org-code       :inherit fixed-pitch :foreground "grey33")
+                  (org-verbatim   :inherit fixed-pitch :foreground "grey47")
+                  (org-ellipsis   :inherit variable-pitch :underline nil)
+                  (org-document-title      :scale 1.35 :weight bold)
+                  (org-block-begin-line    :inherit fixed-pitch :box nil :background "#fbf8ef")
+                  (org-block-end-line      :inherit fixed-pitch :box nil :background "#fbf8ef")
                   (org-latex-and-related   :inherit (variable-pitch-alt org-formula))
                   (org-sexp-date  :inherit (fixed-pitch org-latex-and-related))
                   ;; company-mode: no need to set (these just inherit)
@@ -668,12 +711,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                                org-level-7
                                org-level-8)
                              ))
-    (add-to-list 'my/material-light-faces
+    (add-to-list 'my/common-faces
                  (list text-title-faces
                        :inherit 'variable-pitch-alt
+                       :background nil
                        :box     nil)))
 
-  (dolist (fixed-faces '(;; org-mode
+  (dolist (fixed-faces '(;; --- org-mode ---
                           org-kbd
                           org-date
                           org-todo
@@ -681,11 +725,12 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                           org-footnote
                           org-formula
                           org-link
+                          org-meta-line
                           org-block
                           org-checkbox
                           org-table
                           org-ellipsis
-                          ;; company-mode
+                          ;; --- company-mode ---
                           company-echo
                           company-echo-common
                           company-preview
@@ -696,15 +741,22 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                           company-tooltip
                           company-tooltip-annotation
                           company-tooltip-selection))
-    (add-to-list 'my/material-light-faces
+    (add-to-list 'my/common-faces
                  (list fixed-faces :inherit 'fixed-pitch) t)) ;; t to append
 
   ;; (message (format "value for %s is %s."
   ;;                  'my/material-light-faces
   ;;                  my/material-light-faces))
 
-  (add-to-list 'my/material-light-faces 'material-light)
-  (setq theming-modifications (list my/material-light-faces))
+  (add-to-list 'my/material-light-faces  'material-light)
+  (add-to-list 'my/spacemacs-light-faces 'spacemacs-light)
+  (add-to-list 'my/common-faces           t)
+
+  (setq theming-modifications (list
+                               my/common-faces
+                               my/material-light-faces
+                               my/spacemacs-light-faces
+                               ))
   )
 
 (defun dotspacemacs/user-load ()
@@ -756,7 +808,15 @@ before packages are loaded."
   ;; prettify for all text-modes
   (add-hook 'text-mode-hook
             (lambda ()
-              (push '(" x " . ?×) prettify-symbols-alist)
+              ;; (push '(" x " . ?×) prettify-symbols-alist)
+              (push '("NULL" 7452 (tl . bc) 628 (br tc -25 25) 671) prettify-symbols-alist)
+              (push '("tex" 32 (Br Bl -70 0) 119827 (Br cl -70 30) 119812 (Br Bl -50 0) 119831 (Br Bl -70 0) 32) prettify-symbols-alist)
+              (push '("LaTeX" 32 (Br Bl -75 0) 119819 (cr bl -90 -55) 119808 (Br Bl -65 0) 119827 (Br cl -70 30) 119812 (Br Bl -50 0) 119831 (Br Bl -75 0) 32) prettify-symbols-alist)
+              (push '("latex" 32 (Br Bl -75 0) 119819 (cr bl -90 -55) 119808 (Br Bl -65 0) 119827 (Br cl -70 30) 119812 (Br Bl -50 0) 119831 (Br Bl -75 0) 32) prettify-symbols-alist)
+              (push '("LATEX" 32 (Br Bl -75 0) 119819 (cr bl -90 -55) 119808 (Br Bl -65 0) 119827 (Br cl -70 30) 119812 (Br Bl -50 0) 119831 (Br Bl -75 0) 32) prettify-symbols-alist)
+              ;; Le bon Dieu est dans le détail
+              ;; https://practicaltypography.com/line-spacing.html
+              (setq line-spacing 1)
               ))
 
   ;; powerline & backslash issue on macOS JIS keyboard
@@ -764,9 +824,7 @@ before packages are loaded."
       (progn
         ;; (setq ns-use-srgb-colorspace nil) ; issues/4226
         (setq powerline-image-apple-rgb t) ; milkypostman/powerline/issues/54
-        (define-key evil-insert-state-map (kbd "M-¥") [92])
-        (define-key evil-ex-search-keymap (kbd "M-¥") [92])
-        (define-key evil-ex-completion-map (kbd "M-¥") [92])
+        (define-key global-map (kbd "M-¥") [92])
         )
     )
 
@@ -817,28 +875,36 @@ before packages are loaded."
 
    ;; org-export(luatex-ja)
    (setq org-export-latex-default-packages-alist
-         '(("" luatexja nil)
+         '(("" "luatexja" nil)
            ("" "graphicx" nil)
            ("" "hyperref" nil)))
 
-   (setq org-latex-create-formula-image-program 'imagemagick)
+   (setq
+    org-latex-create-formula-image-program 'imagemagick
+    org-format-latex-options (plist-put org-format-latex-options :scale 2.0)
+    )
 
    (setq org-latex-to-pdf-process
          '("/usr/texbin/lualatex %b"))
+         
+   (setq org-ditaa-jar-path "~/ditaa0_9.jar")
 
    ;; org-babel ---------
    (org-babel-do-load-languages
     'org-babel-load-languages
     '(
-      (C       . t) ;; c++ included
-      (coq     . t)
-      (gnuplot . t)
-      (haskell . t)
-      (latex   . t)
-      (org     . t)
-      (python  . t)
-      (R       . t)
-      (shell   . t)
+      (C        . t) ;; c++ included
+      (coq      . t)
+      (ditaa    . t)
+      (dot      . t)
+      (gnuplot  . t)
+      (haskell  . t)
+      (latex    . t)
+      (org      . t)
+      (plantuml . t)
+      (python   . t)
+      (R        . t)
+      (shell    . t)
       ))
 
    (require 'ob-async)
@@ -855,7 +921,7 @@ before packages are loaded."
    (add-hook 'org-mode-hook
              (lambda ()
                ;; general
-               (push (cons " \\\\" (private/prettify-string " ⏎")) prettify-symbols-alist)
+               (push (cons "\\\\" (private/prettify-string " ⏎")) prettify-symbols-alist)
                ;; Important ones go bottom (push)
                ;; org-babel. https://orgmode.org/manual/Specific-header-arguments.html
                (push (cons ":var"         (private/prettify-string "⟨VAR⟩"))         prettify-symbols-alist)
@@ -968,25 +1034,29 @@ before packages are loaded."
                (push (cons "#+CALL:"       (private/prettify-string "❖-╱ CALL ╱-╏")) prettify-symbols-alist)
                ;; attrribute (13 char.)
                (push (cons "#+ATTR_ASCII:"   (private/prettify-string "❖Attr. ASCII ╏")) prettify-symbols-alist)
+               (push (cons "#+ATTR_ORG:"     (private/prettify-string "❖ Attr. org  ╏")) prettify-symbols-alist)
                (push (cons "#+ATTR_ODT:"     (private/prettify-string "❖ Attr. ODT  ╏")) prettify-symbols-alist)
                (push (cons "#+ATTR_HTML:"    (private/prettify-string "❖ Attr. html ╏")) prettify-symbols-alist)
                (push (cons "#+ATTR_LaTeX:"   (private/prettify-string "❖Attr. LaTeX ╏")) prettify-symbols-alist)
                (push (cons "#+ATTR_BEAMER:"  (private/prettify-string "❖Attr. Beamer╏")) prettify-symbols-alist)
                (push (cons "#+ATTR_TEXINFO:" (private/prettify-string "❖ Attr. Texi ╏")) prettify-symbols-alist)
-               ;; fragment (10 char.)
-               (push (cons "#+ORGTBL:"    (private/prettify-string "❖  OrgTbl. ╏")) prettify-symbols-alist)
-               (push (cons "#+TOC:"       (private/prettify-string "❖  T.o.C.  ╏")) prettify-symbols-alist)
-               (push (cons "#+ASCII:"     (private/prettify-string "❖  ASCII   ╏")) prettify-symbols-alist)
-               (push (cons "#+ODT:"       (private/prettify-string "❖   ODT    ╏")) prettify-symbols-alist)
-               (push (cons "#+HTML:"      (private/prettify-string "❖   html   ╏")) prettify-symbols-alist)
-               (push (cons "#+LaTeX:"     (private/prettify-string "❖  LaTeX   ╏")) prettify-symbols-alist)
-               (push (cons "#+BEAMER:"    (private/prettify-string "❖  Beamer  ╏")) prettify-symbols-alist)
-               (push (cons "#+TEXINFO:"   (private/prettify-string "❖ Texinfo  ╏")) prettify-symbols-alist)
-               ;; misc. (10 char.)
-               (push (cons "#+NAME:"      (private/prettify-string "❖   NAME   ╏")) prettify-symbols-alist)
-               (push (cons "#+CAPTION:"   (private/prettify-string "❖ Caption  ╏")) prettify-symbols-alist)
-               (push (cons "#+INCLUDE:"   (private/prettify-string "❖ #INCLUDE ╏")) prettify-symbols-alist)
-               (push (cons "#+RESULTS:"   (private/prettify-string "╱- RESULTS -╱")) prettify-symbols-alist)
+               ;; insertion (10 char.)
+               (push (cons "#+ORGTBL:"  (private/prettify-string "❖  OrgTbl. ╏")) prettify-symbols-alist)
+               (push (cons "#+TOC:"     (private/prettify-string "❖  T.o.C.  ╏")) prettify-symbols-alist)
+               (push (cons "#+INCLUDE:" (private/prettify-string "❖ #INCLUDE ╏")) prettify-symbols-alist)
+               (push (cons "#+ASCII:"   (private/prettify-string "❖  ASCII   ╏")) prettify-symbols-alist)
+               (push (cons "#+ODT:"     (private/prettify-string "❖   ODT    ╏")) prettify-symbols-alist)
+               (push (cons "#+HTML:"    (private/prettify-string "❖   html   ╏")) prettify-symbols-alist)
+               (push (cons "#+LaTeX:"   (private/prettify-string "❖  LaTeX   ╏")) prettify-symbols-alist)
+               (push (cons "#+BEAMER:"  (private/prettify-string "❖  Beamer  ╏")) prettify-symbols-alist)
+               (push (cons "#+TEXINFO:" (private/prettify-string "❖ Texinfo  ╏")) prettify-symbols-alist)
+               ;; labeling (10 char.)
+               (push (cons "#+NAME:"       (private/prettify-string "❖   NAME   ╏")) prettify-symbols-alist)
+               (push (cons "#+CAPTION:"    (private/prettify-string "❖ Caption  ╏")) prettify-symbols-alist)
+               (push (cons "#+HEADER:"     (private/prettify-string "❖  Header  ╏")) prettify-symbols-alist)
+               (push (cons "#+HEADER:"     (private/prettify-string "❖  Header  ╏")) prettify-symbols-alist)
+               (push (cons "#+DOWNLOADED:" (private/prettify-string "❖   DLed.  ╏")) prettify-symbols-alist)
+               (push (cons "#+RESULTS:"    (private/prettify-string "╱- RESULTS -╱")) prettify-symbols-alist)
                ;; structural blocks. (13 char.) https://orgmode.org/manual/Structure-Templates.html
                (push (cons "#+BEGIN_CENTER"  (private/prettify-string "⌈  Center:  ⌉")) prettify-symbols-alist)
                (push (cons "#+END_CENTER"    (private/prettify-string "⌊  :Center  ⌋")) prettify-symbols-alist)
@@ -1004,9 +1074,9 @@ before packages are loaded."
                (push (cons "#+END_VERSE"     (private/prettify-string "ə s ɹ ə ʌ —”")) prettify-symbols-alist)
                (prettify-symbols-mode)
                ))
-
-
-   ;; (add-hook 'org-mode-hook 'variable-pitch-mode)
+               
+   ;; evil-org
+   (setq org-want-todo-bindings t) 
    )
 
   ;; --------------------
@@ -1055,11 +1125,32 @@ before packages are loaded."
   ;; --------------------
   ;; personal keybindings
   ;; --------------------
+
+  ;;evil ---------------------------------------------------------------------
+  ;; SPC h d b (M-x describe-bindings) to search vim binds
+  ;; Make evil-mode up/down operate in screen lines instead of logical lines
+  (define-key evil-motion-state-map "j" 'evil-next-visual-line)
+  (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
+  ;; Also in visual mode
+  (define-key evil-visual-state-map "j" 'evil-next-visual-line)
+  (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
+
+  ;; default: deer
+  (define-key evil-normal-state-map "-" nil)
+  ;; default: evil-first-non-blank
+  (define-key evil-motion-state-map "^" 'evil-next-line-1-first-non-blank)
+  ;; default: evil-next-line-1-first-non-blank
+  (define-key evil-motion-state-map "_" nil)
+
+  ;; spacemacs ---------------------------------------------------------------
   (global-prettify-symbols-mode 1)
   (spacemacs/declare-prefix "o" "my-cmd.")
   (spacemacs/set-leader-keys "oj" 'skk-mode)
-  (spacemacs/set-leader-keys "oT"
-    'spacemacs/table-manipulation-transient-state/body)
+
+  ;; (spacemacs/declare-prefix "oT" "Table.el")
+  ;; (spacemacs/set-leader-keys "oTC" 'orgtbl-to-table.el)
+  ;; (spacemacs/set-leader-keys "oT."
+  ;;   'spacemacs/table-manipulation-transient-state/body)
   ;; (spacemacs/set-leader-keys "oc" 'count-words-region) -> SPC x c there is
   ;; you can also write like: (spacemacs/set-leader-keys "f" '("foo" . long-name-for-command-foo))
   ;; in that case, you need extra switch to turn on

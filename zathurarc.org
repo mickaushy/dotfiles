@@ -38,6 +38,16 @@
   mkdir -pv ${HOME}/.config/zathura/
 #+END_SRC
 
+macOS の場合は、 =zathura= のアップデート後に =zathura-pdf-poppler= の導入が必要。
+くわしくは: https://github.com/zegervdv/homebrew-zathura/issues/19 を参照。
+
+#+NAME: macOS-prep
+#+BEGIN_SRC sh :results silent :tangle no
+  mkdir -p $(brew --prefix zathura)/lib/zathura
+  ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib \
+        $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+#+END_SRC
+
 ** font
 虞らく使用環境(OS)ごとに再考することになる(dpiが異なるため)。
 

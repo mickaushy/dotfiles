@@ -17,7 +17,8 @@
 
 #+NAME: tangle this file
 #+BEGIN_SRC emacs-lisp :tangle no :results silent
-  (org-babel-tangle)
+  (if (f-directory-p "~/.config/zathura")
+      (org-babel-tangle))
 #+END_SRC
 
 このファイルの出力先を変更するには、このファイル上部の =header-args= 内にある
@@ -32,20 +33,25 @@
 
 *** initialisation
 =zathura= の設定ディレクトリをつくる。
+必ず [[tangle this file][org-babel-tangle]] を実行する前にこのディレクトリがあることを確認すること。
 
 #+NAME: init
 #+BEGIN_SRC sh :results drawer :tangle no
   mkdir -pv ${HOME}/.config/zathura/
 #+END_SRC
 
-macOS の場合は、 =zathura= のアップデート後に =zathura-pdf-poppler= の導入が必要。
+macOS の場合は =homebrew= で管理する。 =zathura= のアップデート後には毎回
+=zathura-pdf-poppler= あるいは =zathura-pdf-mupdf= のリンクが必要。
 くわしくは: https://github.com/zegervdv/homebrew-zathura/issues/19 を参照。
+自分は =mupdf= をバックエンドとして選択した。理由としては [[http://hzqtc.github.io/2012/04/poppler-vs-mupdf.html][ここ]] を参考にした。
 
-#+NAME: macOS-prep
+#+NAME: sh:macOS-prep
 #+BEGIN_SRC sh :results silent :tangle no
   mkdir -p $(brew --prefix zathura)/lib/zathura
-  ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib \
-        $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+  # ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib \
+  #       $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+  ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib \
+        $(brew --prefix zathura)/lib/zathura/libpdf-mupdf.dylib
 #+END_SRC
 
 ** font
@@ -76,11 +82,12 @@ macOS の場合は、 =zathura= のアップデート後に =zathura-pdf-poppler
 ** geometry
 window の高さは Mac Book Air 13inch でほぼ一杯になるように定めた。
 またスライドに多く見られる 3:4 の横幅に定めた。
+サイズをウィンドウマネージャ任せにする場合、上2つのオプションは不要かもしれない。
 
 #+BEGIN_SRC text
   set window-height 840
   set window-width 1120
-  set adjust-open "best-fit" # default: best-fit / width
+  set adjust-open "width" # default: best-fit / width
 #+END_SRC
 
 ** misc.
@@ -96,6 +103,11 @@ OSのクリップボードを使う。
   set window-title-home-tilde "true"
 #+END_SRC
 
+デフォルトの上下幅(40)が小さく感じたので大きくした。
+
+#+BEGIN_SRC text
+  set scroll-step 100
+#+END_SRC
 * (flatui color)                                                   :noexport:
 徹底して色を設定する気になったとき用のメモ。
 
